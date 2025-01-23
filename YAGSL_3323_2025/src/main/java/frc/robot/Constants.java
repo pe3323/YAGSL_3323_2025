@@ -48,4 +48,11 @@ public final class Constants
     public static final double RIGHT_X_DEADBAND = 0.1;
     public static final double TURN_CONSTANT    = 6;
   }
+
+  public static final class ElevatorConstants {
+        
+    public static final double degreePerRot = 2.05;
+    public static final int ele1 = 9;
+    public static final int ele2 = 10;
+  }
 }
