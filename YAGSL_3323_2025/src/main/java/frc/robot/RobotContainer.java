@@ -16,6 +16,7 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.OperatorConstants;
+import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 import java.io.File;
 import swervelib.SwerveInputStream;
@@ -29,6 +30,8 @@ import swervelib.SwerveInputStream;
  * trigger mappings) should be declared here.
  */
 public class RobotContainer {
+
+  private final Elevator elevator = new Elevator();
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
   final CommandXboxController driverXbox = new CommandXboxController(0);
@@ -73,20 +76,10 @@ public class RobotContainer {
       .allianceRelativeControl(true);
   // Derive the heading axis with math!
   SwerveInputStream driveDirectAngleKeyboard = driveAngularVelocityKeyboard.copy()
-      .withControllerHeadingAxis(() -> Math.sin(
-          driverXbox.getRawAxis(
-              2) *
-              Math.PI)
-          *
-          (Math.PI *
-              2),
-          () -> Math.cos(
-              driverXbox.getRawAxis(
-                  2) *
-                  Math.PI)
-              *
-              (Math.PI *
-                  2))
+      .withControllerHeadingAxis(
+        () -> Math.sin(driverXbox.getRawAxis(2) * Math.PI) *(Math.PI * 2),
+        () -> Math.cos(driverXbox.getRawAxis(2) * Math.PI) *(Math.PI * 2)
+      )
       .headingWhile(true);
 
   /**
@@ -152,8 +145,38 @@ public class RobotContainer {
               new Pose2d(new Translation2d(4, 4), Rotation2d.fromDegrees(0))));
       driverXbox.start().whileTrue(Commands.none());
       driverXbox.back().whileTrue(Commands.none());
-      driverXbox.leftBumper().whileTrue(Commands.runOnce(drivebase::lock, drivebase).repeatedly());
-      driverXbox.rightBumper().onTrue(Commands.none());
+      driverXbox.leftBumper().whileTrue(new Command() {
+        public void execute() {
+               
+                elevator.lower();
+
+        }
+
+        public void end(boolean x) {
+                
+                elevator.stop();
+        }
+
+        public boolean isFinished() {
+                return false;
+        }
+});
+      driverXbox.rightBumper().whileTrue(new Command() {
+        public void execute() {
+               
+                elevator.raise();
+
+        }
+
+        public void end(boolean x) {
+                
+                elevator.stop();
+        }
+
+        public boolean isFinished() {
+                return false;
+        }
+});
     }
 
   }

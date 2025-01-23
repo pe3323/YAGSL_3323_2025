@@ -121,6 +121,7 @@ public class SwerveSubsystem extends SubsystemBase
         SmartDashboard.putString("Module " + i , " Encoder Value: " + mod.getAbsolutePosition());
       }
 
+      SmartDashboard.putNumber("Heading", getPose().getRotation().getDegrees() );
 
   }
 
@@ -623,6 +624,7 @@ public class SwerveSubsystem extends SubsystemBase
    */
   public Rotation2d getHeading()
   {
+    SmartDashboard.putNumber("Heading", getPose().getRotation().getDegrees() );
     return getPose().getRotation();
   }
 
