@@ -54,5 +54,21 @@ public final class Constants
     public static final double degreePerRot = 2.05;
     public static final int ele1 = 9;
     public static final int ele2 = 10;
+
+  
+  }
+
+  public static final class CoralConstants {
+    public static final int coralMotorId = 11;
+
+  }
+  public static final class ClimberConstants {
+    public static final int harpoonMotorId = 12;
+    public static final int lockMotorId = 13;
+  }
+
+  public static final class AlgaeConstants {
+    public static final int extenderMotorId = 14;
+
   }
 }

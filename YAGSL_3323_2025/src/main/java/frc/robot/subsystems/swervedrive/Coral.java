@@ -69,6 +69,13 @@ public class Coral extends SubsystemBase {
 
     }
 
+    public void setPosition(double position) { // lowers the roof
+
+        coral.getEncoder().setPosition(position);
+        
+
+    }
+
     public double getposition() { // gets position
         return coral.getEncoder().getPosition();
     }

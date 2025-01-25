@@ -64,6 +64,12 @@ public class Elevator extends SubsystemBase {
     elevator1.set(0);
     elevator2.set(0);
   }
+
+  public void setPosition(double position) { // raises the roof
+
+    elevator1.getEncoder().setPosition(position);
+    elevator2.getEncoder().setPosition(position);
+  }    
   /**
    * Example command factory method.
    *
