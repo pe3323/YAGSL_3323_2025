@@ -49,12 +49,17 @@ public final class Constants
     public static final double TURN_CONSTANT    = 6;
   }
 
+
+
+    public static final double weight = 120;
   public static final class ElevatorConstants {
         
     public static final double degreePerRot = 2.05;
     public static final int ele1 = 9;
     public static final int ele2 = 10;
-
+    public static final double gearRatio = 25;
+    public static final double drumCircumferenceIn = 2.05;
+    public static final double robotHeight = 2.05;
   
   }
 

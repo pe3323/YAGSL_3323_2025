@@ -67,8 +67,8 @@ public class Elevator extends SubsystemBase {
 
   public void setPosition(double position) { // raises the roof
 
-    elevator1.getEncoder().setPosition(position);
-    elevator2.getEncoder().setPosition(position);
+    elevator1.getEncoder().setPosition(ElevatorConstants.gearRatio*(position/ElevatorConstants.drumCircumferenceIn)+ElevatorConstants.robotHeight);
+    elevator2.getEncoder().setPosition(ElevatorConstants.gearRatio*(position/ElevatorConstants.drumCircumferenceIn)+ElevatorConstants.robotHeight);
   }    
   /**
    * Example command factory method.
