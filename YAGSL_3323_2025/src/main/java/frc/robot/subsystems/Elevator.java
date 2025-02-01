@@ -6,16 +6,18 @@ package frc.robot.subsystems;
 
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.ClosedLoopConfig;
+import com.revrobotics.spark.SparkBase.ControlType;
 import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.config.ClosedLoopConfig.FeedbackSensor;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkMaxConfig;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
+import com.revrobotics.REVLibError;
+import com.revrobotics.spark.ClosedLoopSlot;
 import com.revrobotics.spark.SparkClosedLoopController;
 
-
-
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -27,10 +29,12 @@ public class Elevator extends SubsystemBase {
 
   private final SparkMax elevator1;
   private final SparkMax elevator2;
+  private PIDController heightController;
   /** Creates a new ExampleSubsystem. */
   public Elevator() {
 
-
+    heightController = new PIDController(0.1, 0, 0);
+    heightController.setTolerance(0.1);
     
     elevator1= new SparkMax(ElevatorConstants.ele1, MotorType.kBrushless);
     elevator2= new SparkMax(ElevatorConstants.ele2, MotorType.kBrushless);
@@ -39,6 +43,9 @@ public class Elevator extends SubsystemBase {
     config
     //.inverted(true)
     .idleMode(IdleMode.kBrake);
+
+    
+
     elevator1.getEncoder().setPosition(0);
     elevator2.getEncoder().setPosition(0);
 
@@ -65,10 +72,21 @@ public class Elevator extends SubsystemBase {
     elevator2.set(0);
   }
 
+  public double getPosition() {
+    return elevator1.getEncoder().getPosition();
+  }
+
   public void setPosition(double position) { // raises the roof
 
-    elevator1.getEncoder().setPosition(ElevatorConstants.gearRatio*(position/ElevatorConstants.drumCircumferenceIn)+ElevatorConstants.robotHeight);
-    elevator2.getEncoder().setPosition(ElevatorConstants.gearRatio*(position/ElevatorConstants.drumCircumferenceIn)+ElevatorConstants.robotHeight);
+    System.out.println( "Setting the position to : " + position );
+    double targetPosition = ElevatorConstants.gearRatio*(position/ElevatorConstants.drumCircumferenceIn)+ElevatorConstants.robotHeight;
+
+    elevator1.getClosedLoopController().setReference(targetPosition, ControlType.kPosition);
+
+
+    //elevator1.getEncoder().setPosition(targetPosition);
+    elevator2.getEncoder().setPosition(targetPosition);
+    
   }    
   /**
    * Example command factory method.
@@ -103,4 +121,19 @@ public class Elevator extends SubsystemBase {
   public void simulationPeriodic() {
     // This method will be called once per scheduler run during simulation
   }
+
+
+public void setSpeed(double i) {
+    elevator1.set(i);
+    elevator2.set(i);
+}
+
+
+public double getHeight() {
+  return elevator1.getEncoder().getPosition();
+}
+
+public PIDController getController() {
+  return heightController;
+}
 }

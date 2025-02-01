@@ -20,6 +20,7 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.OperatorConstants;
+import frc.robot.commands.SetElevatorHeight;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 import java.io.File;
@@ -155,7 +156,7 @@ public class RobotContainer {
               new Pose2d(new Translation2d(4, 4), Rotation2d.fromDegrees(0))));
       driverXbox.start().whileTrue(Commands.none());
       driverXbox.back().whileTrue(Commands.none());
-      driverXbox.leftBumper().whileTrue(new Command() {
+      operatorXbox.leftBumper().whileTrue(new Command() {
         public void execute() {
                
                 elevator.lower();
@@ -171,7 +172,7 @@ public class RobotContainer {
                 return false;
         }
 });
-      driverXbox.rightBumper().whileTrue(new Command() {
+      operatorXbox.rightBumper().whileTrue(new Command() {
         public void execute() {
                
                 elevator.raise();
@@ -187,6 +188,22 @@ public class RobotContainer {
                 return false;
         }
 });
+
+      operatorXbox.a().onTrue(
+        new SetElevatorHeight(elevator, 0
+        ));
+
+      operatorXbox.x().onTrue(
+        new SetElevatorHeight(elevator, 32
+        ));
+       
+      operatorXbox.b().onTrue(
+        new SetElevatorHeight(elevator, 48
+        ));
+
+      operatorXbox.y().onTrue(
+        new SetElevatorHeight(elevator, 72
+        ));
     }
 
   }
