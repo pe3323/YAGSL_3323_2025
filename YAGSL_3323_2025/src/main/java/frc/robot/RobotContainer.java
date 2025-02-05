@@ -20,11 +20,14 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.OperatorConstants;
+import frc.robot.commands.SetCoralAngle;
 import frc.robot.commands.SetElevatorHeight;
 import frc.robot.subsystems.Elevator;
+import frc.robot.subsystems.swervedrive.Coral;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 import java.io.File;
 import swervelib.SwerveInputStream;
+
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -37,7 +40,8 @@ import swervelib.SwerveInputStream;
 public class RobotContainer {
 
   private final Elevator elevator = new Elevator();
-
+  private final Coral coral = new Coral();
+ 
   // Replace with CommandPS4Controller or CommandJoystick if needed
   final CommandXboxController driverXbox = new CommandXboxController(0);
   final CommandXboxController operatorXbox = new CommandXboxController(1);
@@ -156,42 +160,11 @@ public class RobotContainer {
               new Pose2d(new Translation2d(4, 4), Rotation2d.fromDegrees(0))));
       driverXbox.start().whileTrue(Commands.none());
       driverXbox.back().whileTrue(Commands.none());
-      operatorXbox.leftBumper().whileTrue(new Command() {
-        public void execute() {
-               
-                elevator.lower();
-
-        }
-
-        public void end(boolean x) {
-                
-                elevator.stop();
-        }
-
-        public boolean isFinished() {
-                return false;
-        }
-});
-      operatorXbox.rightBumper().whileTrue(new Command() {
-        public void execute() {
-               
-                elevator.raise();
-
-        }
-
-        public void end(boolean x) {
-                
-                elevator.stop();
-        }
-
-        public boolean isFinished() {
-                return false;
-        }
-});
+      
 
       operatorXbox.a().onTrue(
-        new SetElevatorHeight(elevator, 0
-        ));
+        new SetElevatorHeight(elevator, 0)
+        );
 
       operatorXbox.x().onTrue(
         new SetElevatorHeight(elevator, 32
@@ -204,6 +177,12 @@ public class RobotContainer {
       operatorXbox.y().onTrue(
         new SetElevatorHeight(elevator, 72
         ));
+        operatorXbox.leftBumper().onTrue(
+          new SetCoralAngle(coral, 0
+          ));
+          operatorXbox.rightBumper().onTrue(
+            new SetCoralAngle(coral, 72
+            ));
     }
 
   }

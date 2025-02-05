@@ -66,7 +66,9 @@ public final class Constants
   public static final class CoralConstants {
     public static final int coralMotorId = 11;
 
+    public static final int coralGear = 20;//Not actually 20 lmao, this is a placeholder and nathan lied D:
   }
+
   public static final class ClimberConstants {
     public static final int harpoonMotorId = 12;
     public static final int lockMotorId = 13;

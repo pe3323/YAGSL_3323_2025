@@ -14,8 +14,7 @@ import com.revrobotics.spark.config.SparkMaxConfig;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkClosedLoopController;
 
-
-
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -27,6 +26,8 @@ public class Climber extends SubsystemBase {
 
   private final SparkMax harpoon;
   private final SparkMax lock;
+  private PIDController lockController;
+  private PIDController harpoonController;
   /** Creates a new ExampleSubsystem. */
   public Climber() {
 
@@ -39,6 +40,8 @@ public class Climber extends SubsystemBase {
     config
     //.inverted(true)
     .idleMode(IdleMode.kBrake);
+
+    
     harpoon.getEncoder().setPosition(0);
     lock.getEncoder().setPosition(0);
 
@@ -55,10 +58,45 @@ public class Climber extends SubsystemBase {
     harpoon.getEncoder().setPosition(position);
   }    
 
+  public void setHarpoonSpeed(double i) {
+    harpoon.set(i);
+}
+
+public void stopHarpoon() { // stops the roof
+  harpoon.set(0);
+
+}
+
+public double getHarpoon() {
+  return harpoon.getEncoder().getPosition();
+}
+
+public PIDController getHarpoonController() {
+  return harpoonController;
+}
+
+
   public void setLockPosition(double position) { // raises the roof
 
     lock.getEncoder().setPosition(position);
   }    
+
+  public void setLockSpeed(double i) {
+    lock.set(i);
+}
+
+public void stopLock() { // stops the roof
+  lock.set(0);
+
+}
+
+public double getLock() {
+  return lock.getEncoder().getPosition();
+}
+
+public PIDController getLockController() {
+  return lockController;
+}
   /**
    * Example command factory method.
    *

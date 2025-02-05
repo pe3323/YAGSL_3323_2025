@@ -9,6 +9,7 @@ import com.revrobotics.spark.config.ClosedLoopConfig.FeedbackSensor;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkMaxConfig;
 
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -22,9 +23,14 @@ public class Coral extends SubsystemBase {
     private DigitalInput sensor;
     SparkClosedLoopController pidController;
 
+    private PIDController heightController;
+
     public Coral() {
         coral = new SparkMax(CoralConstants.coralMotorId, MotorType.kBrushless); // makes new motor controller that is
         SparkMaxConfig config = new SparkMaxConfig();// defined as the motor for the arm
+
+        heightController = new PIDController(0.1, 0, 0);
+    heightController.setTolerance(0.1);
 
         config
         //.inverted(true)
@@ -79,6 +85,16 @@ public class Coral extends SubsystemBase {
     public double getposition() { // gets position
         return coral.getEncoder().getPosition();
     }
+public double getHeight() {
+  return coral.getEncoder().getPosition();
+}
 
+public PIDController getController() {
+  return heightController;
+}
+
+public void setSpeed(double i) {
+    coral.set(i);
+}
 }
 
