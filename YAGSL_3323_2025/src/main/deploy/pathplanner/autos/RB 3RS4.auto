@@ -11,15 +11,51 @@
           }
         },
         {
+          "type": "named",
+          "data": {
+            "name": "Level2"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "algaeExtend"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "coralDeposit"
+          }
+        },
+        {
           "type": "path",
           "data": {
             "pathName": "3 to RS"
           }
         },
         {
+          "type": "named",
+          "data": {
+            "name": "coralDefault"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 2.0
+          }
+        },
+        {
           "type": "path",
           "data": {
             "pathName": "RS to 4"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "coralDeposit"
           }
         }
       ]

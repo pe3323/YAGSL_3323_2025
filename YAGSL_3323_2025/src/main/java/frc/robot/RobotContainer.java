@@ -20,9 +20,18 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.OperatorConstants;
+import frc.robot.commands.AlgaeExtend;
+import frc.robot.commands.AlgaeGrab;
+import frc.robot.commands.AlgaeRelease;
+import frc.robot.commands.AlgaeRetract;
 import frc.robot.commands.SetCoralAngle;
 import frc.robot.commands.SetElevatorHeight;
+import frc.robot.commands.SetHarpoonAngle;
+import frc.robot.commands.SetLockAngle;
+import frc.robot.subsystems.Algae;
+import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Elevator;
+import frc.robot.subsystems.PneumaticsSubsystem;
 import frc.robot.subsystems.swervedrive.Coral;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 import java.io.File;
@@ -41,7 +50,14 @@ public class RobotContainer {
 
   private final Elevator elevator = new Elevator();
   private final Coral coral = new Coral();
- 
+  private final PneumaticsSubsystem pneumatic = new PneumaticsSubsystem();
+  private final Climber climber = new Climber();
+  private final Algae algae = new Algae();
+  private boolean level0 = true;
+  private boolean level1 = false;
+  private boolean level2 = false;
+  private boolean level3 = false;
+
   // Replace with CommandPS4Controller or CommandJoystick if needed
   final CommandXboxController driverXbox = new CommandXboxController(0);
   final CommandXboxController operatorXbox = new CommandXboxController(1);
@@ -99,6 +115,21 @@ public class RobotContainer {
    */
   public RobotContainer() {
     // Configure the trigger bindings
+
+    NamedCommands.registerCommand("Level0", new SetElevatorHeight(elevator, 0));  
+    NamedCommands.registerCommand("Level1", new SetElevatorHeight(elevator, 32)); 
+    NamedCommands.registerCommand("Level2", new SetElevatorHeight(elevator, 48)); 
+    NamedCommands.registerCommand("Level3", new SetElevatorHeight(elevator, 72)); 
+    NamedCommands.registerCommand("coralDeposit", new SetCoralAngle(coral, 125)); 
+    NamedCommands.registerCommand("coralDefault", new SetCoralAngle(coral, 0));
+    NamedCommands.registerCommand("algaeExtend", new AlgaeExtend(algae, 2));
+    NamedCommands.registerCommand("algaeGrab", new AlgaeGrab(pneumatic));
+    NamedCommands.registerCommand("algaeRelease", new AlgaeRelease(pneumatic)); 
+    NamedCommands.registerCommand("algaeRetract", new AlgaeRetract(algae, 2)); 
+    
+
+
+
     configureBindings();
     DriverStation.silenceJoystickConnectionWarning(true);
     NamedCommands.registerCommand("test", Commands.print("I EXIST"));
@@ -162,30 +193,192 @@ public class RobotContainer {
       driverXbox.back().whileTrue(Commands.none());
       
 
-      operatorXbox.a().onTrue(
-        new SetElevatorHeight(elevator, 0)
-        );
 
-      operatorXbox.x().onTrue(
-        new SetElevatorHeight(elevator, 32
-        ));
+      /*
+       * Describe what you're trying to do here..
+       * SetElevatorHeight is already a command.
+       * Are you sure you don't want to use SequentialCommandGroup here instead?
+       * a -> b -> c ....
+       */
+      operatorXbox.a().onTrue( new Command() {
+
+        Command toRun;
+        @Override
+        public void initialize() {
+          if (level0 = false){
+            toRun = new SetElevatorHeight(elevator, 0);
+            level0 = true;
+            level1 = false;
+            level2 = false;
+            level3 = false;
+          } else {
+             toRun = new SetCoralAngle(coral, 0);
+          }
+        }
+
+        @Override
+        public void execute() {
+          toRun.execute();
+        }
+
+        @Override
+        public boolean isFinished(){
+          return toRun.isFinished();
+        }
+      });
+
+      operatorXbox.x().onTrue( new Command() {
+
+        Command toRun;
+        @Override
+        public void initialize() {
+          if (level1 = false){
+            toRun = new SetElevatorHeight(elevator, 32);
+            level0 = false;
+            level1 = true;
+            level2 = false;
+            level3 = false;
+          } else {
+             toRun = new SetCoralAngle(coral, 45);
+          }
+        }
+
+        @Override
+        public void execute() {
+          toRun.execute();
+        }
+
+        @Override
+        public boolean isFinished(){
+          return toRun.isFinished();
+        }
+      });
        
-      operatorXbox.b().onTrue(
-        new SetElevatorHeight(elevator, 48
-        ));
+      operatorXbox.b().onTrue( new Command() {
 
-      operatorXbox.y().onTrue(
-        new SetElevatorHeight(elevator, 72
-        ));
-        operatorXbox.leftBumper().onTrue(
-          new SetCoralAngle(coral, 0
-          ));
-          operatorXbox.rightBumper().onTrue(
-            new SetCoralAngle(coral, 72
-            ));
+        Command toRun;
+        @Override
+        public void initialize() {
+          if (level2 = false){
+            toRun = new SetElevatorHeight(elevator,48);
+            level0 = false;
+            level1 = false;
+            level2 = true;
+            level3 = false;
+          } else {
+             toRun = new SetCoralAngle(coral, 45);
+          }
+        }
+
+        @Override
+        public void execute() {
+          toRun.execute();
+        }
+
+        @Override
+        public boolean isFinished(){
+          return toRun.isFinished();
+        }
+      });
+
+      operatorXbox.y().onTrue( new Command() {
+
+        Command toRun;
+        @Override
+        public void initialize() {
+          if (level3 = false){
+            toRun = new SetElevatorHeight(elevator, 72);
+            level0 = false;
+            level1 = false;
+            level2 = false;
+            level3 = true;
+          } else {
+             toRun = new SetCoralAngle(coral, 0);
+          }
+        }
+
+        @Override
+        public void execute() {
+          toRun.execute();
+        }
+
+        @Override
+        public boolean isFinished(){
+          return toRun.isFinished();
+        }
+      });
+        operatorXbox.leftBumper().onTrue(new Command() {
+          @Override
+          public void execute() {
+            pneumatic.toggleExtendandRetract();
+          }
+    
+          @Override
+          public boolean isFinished(){
+            return true;
+          }
+        });
+
+        driverXbox.leftBumper().onTrue(new Command() {
+          @Override
+          public void execute() {
+            climber.HarpoonRetract();
+          }
+    
+          @Override
+          public boolean isFinished(){
+            return true;
+          }
+        });
+
+
+        driverXbox.rightBumper().onTrue(new Command() {
+          @Override
+          public void execute() {
+            climber.HarpoonExtend();
+          }
+    
+          @Override
+          public boolean isFinished(){
+            return true;
+          }
+        });
+
+
+        driverXbox.a().onTrue(
+        new SetLockAngle(climber, 90)  
+        );
+       
+        driverXbox.b().onTrue(
+        new SetHarpoonAngle(climber, -90)  
+        );
     }
+    operatorXbox.rightBumper().onTrue(new Command() {
+      @Override
+      public void execute() {
+        algae.extend();
+      }
+
+      @Override
+      public boolean isFinished(){
+        return true;
+      }
+    });
+
+    operatorXbox.rightTrigger().onTrue(new Command() {
+      @Override
+      public void execute() {
+        algae.retract();
+      }
+
+      @Override
+      public boolean isFinished(){
+        return true;
+      }
+    });
 
   }
+
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.

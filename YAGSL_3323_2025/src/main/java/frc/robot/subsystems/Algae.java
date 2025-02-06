@@ -47,7 +47,7 @@ public class Algae extends SubsystemBase {
 
     }
 
-    public void raise() { // raises the roof
+    public void extend() { // raises the roof
 
         extender.set(-.30);
         SmartDashboard.putBoolean("Sensor Value", sensor.get());
@@ -56,8 +56,8 @@ public class Algae extends SubsystemBase {
     
     }
 
-    // No more calamari
-    public void lower() { // lowers the roof
+    // No more algae
+    public void retract() { // lowers the roof
 
         extender.set(.15);
         

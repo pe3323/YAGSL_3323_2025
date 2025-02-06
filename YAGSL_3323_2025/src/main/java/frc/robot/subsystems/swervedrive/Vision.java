@@ -147,8 +147,8 @@ public class Vision
       {
         var pose = poseEst.get();
         swerveDrive.addVisionMeasurement(pose.estimatedPose.toPose2d(),
-                                         pose.timestampSeconds,
-                                         camera.curStdDevs);
+        pose.timestampSeconds,
+        camera.curStdDevs);
       }
     }
 
