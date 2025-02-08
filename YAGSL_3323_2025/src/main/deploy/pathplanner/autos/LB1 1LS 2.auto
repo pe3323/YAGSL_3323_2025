@@ -1,0 +1,61 @@
+{
+  "version": "2025.0",
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "LB to 1"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Level3"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "1 to LS"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "coralDeposit"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "LS to 1"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Level2"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "1 to LS"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "coralDeposit"
+          }
+        }
+      ]
+    }
+  },
+  "resetOdom": true,
+  "folder": null,
+  "choreoAuto": false
+}

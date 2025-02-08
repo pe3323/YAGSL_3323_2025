@@ -9,6 +9,12 @@
           "data": {
             "pathName": "C to 2"
           }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Level3"
+          }
         }
       ]
     }
