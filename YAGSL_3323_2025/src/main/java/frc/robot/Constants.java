@@ -19,6 +19,12 @@ import swervelib.math.Matter;
 public final class Constants
 {
 
+  // Set the height of the elevator in inches from the floor.
+  // this value is the height of the robot + elevator.
+  public static final double LEVEL1_HEIGHT = 21;
+  public static final double LEVEL2_HEIGHT = 41.5; 
+  public static final double LEVEL3_HEIGHT = 62;
+
   public static final double ROBOT_MASS = (148 - 20.3) * 0.453592; // 32lbs * kg per pound
   public static final Matter CHASSIS    = new Matter(new Translation3d(0, 0, Units.inchesToMeters(8)), ROBOT_MASS);
   public static final double LOOP_TIME  = 0.13; //s, 20ms + 110ms sprk max velocity lag

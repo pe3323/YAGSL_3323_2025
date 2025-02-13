@@ -133,8 +133,22 @@ public class RobotContainer {
     configureBindings();
     DriverStation.silenceJoystickConnectionWarning(true);
     NamedCommands.registerCommand("test", Commands.print("I EXIST"));
+
+    // Add autonomous commands here  
     m_chooser.setDefaultOption("Do nothing", new PathPlannerAuto("C2"));
     m_chooser.addOption("Default", new PathPlannerAuto("Default"));
+    m_chooser.addOption("LB1 1LS", new PathPlannerAuto("LB1 1LS"));
+    m_chooser.addOption("RB3 3RS", new PathPlannerAuto("RB3 3RS"));
+    m_chooser.addOption("LB1 1LS 2", new PathPlannerAuto("LB1 1LS 2"));
+    m_chooser.addOption("RB3 3RS 2", new PathPlannerAuto("RB3 3RS 2"));
+    m_chooser.addOption("RB3 RS3 3", new PathPlannerAuto("RB3 RS3 3"));
+    m_chooser.addOption("LB1 LS1 3", new PathPlannerAuto("LB1 LS1 3"));
+    m_chooser.addOption("RB3 3RS RS4 4RS", new PathPlannerAuto("RB3 3RS RS4 4RS"));
+    m_chooser.addOption("RB3 3RS RS4 4RS 2", new PathPlannerAuto("Rb3 3RS RS4 4RS 2"));
+    m_chooser.addOption("LB1 1LS LS6 6LS LS5", new PathPlannerAuto("Lb1 1LS LS6 6LS LS5"));
+    m_chooser.addOption("LB1 1LS 2 LS6 6LS", new PathPlannerAuto("LB1 1LS 2 LS6 6LS"));
+
+
     SmartDashboard.putData("Autonomous Mode", m_chooser);
   }
 
@@ -233,7 +247,7 @@ public class RobotContainer {
         @Override
         public void initialize() {
           if (level1 = false){
-            toRun = new SetElevatorHeight(elevator, 32);
+            toRun = new SetElevatorHeight(elevator, Constants.LEVEL1_HEIGHT);
             level0 = false;
             level1 = true;
             level2 = false;
@@ -260,7 +274,7 @@ public class RobotContainer {
         @Override
         public void initialize() {
           if (level2 = false){
-            toRun = new SetElevatorHeight(elevator,48);
+            toRun = new SetElevatorHeight(elevator,41.5 );
             level0 = false;
             level1 = false;
             level2 = true;
@@ -287,7 +301,7 @@ public class RobotContainer {
         @Override
         public void initialize() {
           if (level3 = false){
-            toRun = new SetElevatorHeight(elevator, 72);
+            toRun = new SetElevatorHeight(elevator, 62);
             level0 = false;
             level1 = false;
             level2 = false;

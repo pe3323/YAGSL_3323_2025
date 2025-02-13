@@ -6,6 +6,7 @@ package frc.robot.subsystems;
 
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.ClosedLoopConfig;
+import com.revrobotics.spark.config.SoftLimitConfig;
 import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.config.ClosedLoopConfig.FeedbackSensor;
@@ -37,9 +38,23 @@ public class Climber extends SubsystemBase {
     harpoon= new SparkMax(ClimberConstants.harpoonMotorId, MotorType.kBrushless);
     lock= new SparkMax(ClimberConstants.lockMotorId, MotorType.kBrushless);
     harpoonExtend= new SparkMax(ClimberConstants.harpoonExtendMotorId, MotorType.kBrushless);
-    SparkMaxConfig config = new SparkMaxConfig();
+    SparkMaxConfig harpoonConfig = new SparkMaxConfig();
+    SparkMaxConfig lockConfig = new SparkMaxConfig();
+    SoftLimitConfig softLimit = new SoftLimitConfig();
 
-    config
+    softLimit
+    .forwardSoftLimitEnabled(true)
+    .forwardSoftLimit(32)
+    .reverseSoftLimitEnabled(true)
+    .reverseSoftLimit(0);
+
+
+    harpoonConfig
+    //.inverted(true)
+    .idleMode(IdleMode.kBrake)
+    .apply(softLimit);
+
+    lockConfig
     //.inverted(true)
     .idleMode(IdleMode.kBrake);
 
@@ -48,9 +63,9 @@ public class Climber extends SubsystemBase {
     lock.getEncoder().setPosition(0);
     harpoonExtend.getEncoder().setPosition(0);
 
-    harpoon.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
-    harpoonExtend.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
-    lock.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+    harpoon.configure(harpoonConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+    harpoonExtend.configure(lockConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+    lock.configure(lockConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
   }
 

@@ -10,7 +10,7 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-
+import frc.robot.subsystems.Lights;
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to each mode, as
  * described in the TimedRobot documentation. If you change the name of this class or the package after creating this
@@ -18,6 +18,8 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
  */
 public class Robot extends TimedRobot
 {
+  
+  private final Lights lightsSubsystem = new Lights(0);
 
   private static Robot   instance;
   private        Command m_autonomousCommand;
@@ -108,6 +110,8 @@ public class Robot extends TimedRobot
     if (m_autonomousCommand != null)
     {
       m_autonomousCommand.schedule();
+      lightsSubsystem.setSolidColor (65, 11, 97);
+      
     }
   }
 
@@ -133,6 +137,17 @@ public class Robot extends TimedRobot
     {
       CommandScheduler.getInstance().cancelAll();
     }
+ 
+       var alliance = DriverStation.getAlliance();
+      if (alliance.get() == DriverStation.Alliance.Red){
+        lightsSubsystem.setSolidColor (227, 5, 5);
+      }
+      else{
+        lightsSubsystem.setSolidColor (62, 62, 255);
+      }
+ 
+ 
+ 
   }
 
   /**

@@ -7,6 +7,7 @@ import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.ClosedLoopConfig.FeedbackSensor;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
+import com.revrobotics.spark.config.SoftLimitConfig;
 import com.revrobotics.spark.config.SparkMaxConfig;
 
 import edu.wpi.first.wpilibj.DigitalInput;
@@ -25,12 +26,20 @@ public class Algae extends SubsystemBase {
     public Algae() {
         extender = new SparkMax(AlgaeConstants.extenderMotorId, MotorType.kBrushless); // makes new motor controller that is
         SparkMaxConfig config = new SparkMaxConfig();// defined as the motor for the arm
+        SoftLimitConfig softLimit = new SoftLimitConfig();
+
+
+
+        softLimit
+        .forwardSoftLimitEnabled(true)
+        .forwardSoftLimit(43)
+        .reverseSoftLimitEnabled(true)
+        .reverseSoftLimit(0);
 
         config
         //.inverted(true)
-        .idleMode(IdleMode.kBrake);
-       extender.getEncoder().setPosition(0);
-
+        .idleMode(IdleMode.kBrake)
+       .apply(softLimit);
 
         config.closedLoop
             .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
@@ -38,6 +47,7 @@ public class Algae extends SubsystemBase {
             .iZone(0)
             .outputRange(-1, 1);
 
+            extender.getEncoder().setPosition(0);
        extender.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
         sensor = new DigitalInput(1);
     }

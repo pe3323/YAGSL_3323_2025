@@ -5,21 +5,14 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.spark.SparkMax;
-import com.revrobotics.spark.config.ClosedLoopConfig;
 import com.revrobotics.spark.SparkBase.ControlType;
 import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
-import com.revrobotics.spark.config.ClosedLoopConfig.FeedbackSensor;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
+import com.revrobotics.spark.config.SoftLimitConfig;
 import com.revrobotics.spark.config.SparkMaxConfig;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
-import com.revrobotics.REVLibError;
-import com.revrobotics.spark.ClosedLoopSlot;
-import com.revrobotics.spark.SparkClosedLoopController;
-
 import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
@@ -28,7 +21,7 @@ import frc.robot.Constants.ElevatorConstants;
 public class Elevator extends SubsystemBase {
 
   private final SparkMax elevator1;
-  private final SparkMax elevator2;
+  
   private PIDController heightController;
   /** Creates a new ExampleSubsystem. */
   public Elevator() {
@@ -37,20 +30,31 @@ public class Elevator extends SubsystemBase {
     heightController.setTolerance(0.1);
     
     elevator1= new SparkMax(ElevatorConstants.ele1, MotorType.kBrushless);
-    elevator2= new SparkMax(ElevatorConstants.ele2, MotorType.kBrushless);
+    
     SparkMaxConfig config = new SparkMaxConfig();
+    SoftLimitConfig softLimit = new SoftLimitConfig();
 
+    softLimit
+    .forwardSoftLimitEnabled(true)
+    .forwardSoftLimit(72)
+    .reverseSoftLimitEnabled(true)
+    .reverseSoftLimit(0);
+    
     config
     //.inverted(true)
-    .idleMode(IdleMode.kBrake);
+    .idleMode(IdleMode.kBrake)
+    .apply(softLimit);
+
+   
+    
 
     
 
     elevator1.getEncoder().setPosition(0);
-    elevator2.getEncoder().setPosition(0);
+   
 
     elevator1.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
-    elevator2.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+  
 
   }
 
@@ -58,18 +62,18 @@ public class Elevator extends SubsystemBase {
   public void raise() { // raises the roof
 
     elevator1.set(-.30);
-    elevator2.set(-.30);
+    
   }
 
   public void lower() { // raises the roof
 
     elevator1.set(-.30);
-    elevator2.set(-.30);
+    
   }    
 
   public void stop(){
     elevator1.set(0);
-    elevator2.set(0);
+    
   }
 
   public double getPosition() {
@@ -84,8 +88,8 @@ public class Elevator extends SubsystemBase {
     elevator1.getClosedLoopController().setReference(targetPosition, ControlType.kPosition);
 
 
-    //elevator1.getEncoder().setPosition(targetPosition);
-    elevator2.getEncoder().setPosition(targetPosition);
+    elevator1.getEncoder().setPosition(targetPosition);
+    
     
   }    
   /**
@@ -125,7 +129,7 @@ public class Elevator extends SubsystemBase {
 
 public void setSpeed(double i) {
     elevator1.set(i);
-    elevator2.set(i);
+   
 }
 
 
