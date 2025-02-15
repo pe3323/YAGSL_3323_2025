@@ -21,8 +21,6 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.AlgaeExtend;
-import frc.robot.commands.AlgaeGrab;
-import frc.robot.commands.AlgaeRelease;
 import frc.robot.commands.AlgaeRetract;
 import frc.robot.commands.SetCoralAngle;
 import frc.robot.commands.SetElevatorHeight;
@@ -31,6 +29,7 @@ import frc.robot.commands.SetLockAngle;
 import frc.robot.subsystems.Algae;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Elevator;
+import frc.robot.subsystems.Lights;
 import frc.robot.subsystems.PneumaticsSubsystem;
 import frc.robot.subsystems.swervedrive.Coral;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
@@ -57,6 +56,7 @@ public class RobotContainer {
   private boolean level1 = false;
   private boolean level2 = false;
   private boolean level3 = false;
+  private final Lights lightsSubsystem = new Lights(0);
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
   final CommandXboxController driverXbox = new CommandXboxController(0);
@@ -116,16 +116,15 @@ public class RobotContainer {
   public RobotContainer() {
     // Configure the trigger bindings
 
-    NamedCommands.registerCommand("Level0", new SetElevatorHeight(elevator, 0));  
-    NamedCommands.registerCommand("Level1", new SetElevatorHeight(elevator, 32)); 
-    NamedCommands.registerCommand("Level2", new SetElevatorHeight(elevator, 48)); 
-    NamedCommands.registerCommand("Level3", new SetElevatorHeight(elevator, 72)); 
+    NamedCommands.registerCommand("Level0", new SetElevatorHeight(elevator, 0, lightsSubsystem));  
+    NamedCommands.registerCommand("Level1", new SetElevatorHeight(elevator, Constants.LEVEL1_HEIGHT, lightsSubsystem)); 
+    NamedCommands.registerCommand("Level2", new SetElevatorHeight(elevator, Constants.LEVEL2_HEIGHT, lightsSubsystem)); 
+    NamedCommands.registerCommand("Level3", new SetElevatorHeight(elevator, Constants.LEVEL3_HEIGHT, lightsSubsystem)); 
     NamedCommands.registerCommand("coralDeposit", new SetCoralAngle(coral, 125)); 
     NamedCommands.registerCommand("coralDefault", new SetCoralAngle(coral, 0));
-    NamedCommands.registerCommand("algaeExtend", new AlgaeExtend(algae, 2));
-    NamedCommands.registerCommand("algaeGrab", new AlgaeGrab(pneumatic));
-    NamedCommands.registerCommand("algaeRelease", new AlgaeRelease(pneumatic)); 
-    NamedCommands.registerCommand("algaeRetract", new AlgaeRetract(algae, 2)); 
+    NamedCommands.registerCommand("algaeExtend", new AlgaeExtend(algae, 2, lightsSubsystem));
+   
+    NamedCommands.registerCommand("algaeRetract", new AlgaeRetract(algae, 2, lightsSubsystem)); 
     
 
 
@@ -220,7 +219,7 @@ public class RobotContainer {
         @Override
         public void initialize() {
           if (level0 = false){
-            toRun = new SetElevatorHeight(elevator, 0);
+            toRun = new SetElevatorHeight(elevator, 0, lightsSubsystem);
             level0 = true;
             level1 = false;
             level2 = false;
@@ -247,7 +246,7 @@ public class RobotContainer {
         @Override
         public void initialize() {
           if (level1 = false){
-            toRun = new SetElevatorHeight(elevator, Constants.LEVEL1_HEIGHT);
+            toRun = new SetElevatorHeight(elevator, Constants.LEVEL1_HEIGHT, lightsSubsystem);
             level0 = false;
             level1 = true;
             level2 = false;
@@ -274,7 +273,7 @@ public class RobotContainer {
         @Override
         public void initialize() {
           if (level2 = false){
-            toRun = new SetElevatorHeight(elevator,41.5 );
+            toRun = new SetElevatorHeight(elevator, 41.5, lightsSubsystem );
             level0 = false;
             level1 = false;
             level2 = true;
@@ -301,7 +300,7 @@ public class RobotContainer {
         @Override
         public void initialize() {
           if (level3 = false){
-            toRun = new SetElevatorHeight(elevator, 62);
+            toRun = new SetElevatorHeight(elevator, 62, lightsSubsystem);
             level0 = false;
             level1 = false;
             level2 = false;
@@ -360,11 +359,11 @@ public class RobotContainer {
 
 
         driverXbox.a().onTrue(
-        new SetLockAngle(climber, 90)  
+        new SetLockAngle(climber, 90, lightsSubsystem)  
         );
        
         driverXbox.b().onTrue(
-        new SetHarpoonAngle(climber, -90)  
+        new SetHarpoonAngle(climber, -90, lightsSubsystem)  
         );
     }
     operatorXbox.rightBumper().onTrue(new Command() {

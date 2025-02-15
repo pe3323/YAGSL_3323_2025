@@ -10,33 +10,35 @@ import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SoftLimitConfig;
 import com.revrobotics.spark.config.SparkMaxConfig;
 
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.AlgaeConstants;
-import frc.robot.subsystems.Lights;
 
-public class Algae extends SubsystemBase {
+public class AlgaeGrabber extends SubsystemBase {
           
 
 
-    private final SparkMax extender;
+    private final SparkMax grabber;
     private DigitalInput sensor;
     SparkClosedLoopController pidController;
+    private PIDController poseController;
 
-    public Algae() {
-        extender = new SparkMax(AlgaeConstants.extenderMotorId, MotorType.kBrushless); // makes new motor controller that is
+    public AlgaeGrabber() {
+        grabber = new SparkMax(AlgaeConstants.grabberMotorId, MotorType.kBrushless); // makes new motor controller that is
         SparkMaxConfig config = new SparkMaxConfig();// defined as the motor for the arm
         SoftLimitConfig softLimit = new SoftLimitConfig();
-
+        poseController = new PIDController(0.1, 0, 0);
+        poseController.setTolerance(0.1);
+        
 
 
         softLimit
         .forwardSoftLimitEnabled(true)
-        .forwardSoftLimit(AlgaeConstants.maxAlgaePosition)
+        .forwardSoftLimit(43)
         .reverseSoftLimitEnabled(true)
-        .reverseSoftLimit(AlgaeConstants.miniumumAlgaePostition);
-       
+        .reverseSoftLimit(0);
 
         config
         //.inverted(true)
@@ -49,8 +51,8 @@ public class Algae extends SubsystemBase {
             .iZone(0)
             .outputRange(-1, 1);
 
-            extender.getEncoder().setPosition(0);
-       extender.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+            grabber.getEncoder().setPosition(0);
+       grabber.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
         sensor = new DigitalInput(1);
     }
 
@@ -59,9 +61,9 @@ public class Algae extends SubsystemBase {
 
     }
 
-    public void extend() { // raises the roof
+    public void grab() { // raises the roof
 
-        extender.set(-.30);
+        grabber.set(-.30);
         SmartDashboard.putBoolean("Sensor Value", sensor.get());
         
 
@@ -69,27 +71,38 @@ public class Algae extends SubsystemBase {
     }
 
     // No more algae
-    public void retract() { // lowers the roof
+    public void release() { // lowers the roof
 
-        extender.set(.15);
+        grabber.set(.15);
+        
+
+    }
+
+    public void setSpeed(double i) { // lowers the roof
+
+        grabber.set(i);
         
 
     }
 
     public void stop() { // stops the roof
-        extender.set(0);
+        grabber.set(0);
 
     }
+   
+    public PIDController getController() {
+        return poseController;
+      }
 
     public void setPosition(double position) { // lowers the roof
 
-        extender.getEncoder().setPosition(position);
+        grabber.getEncoder().setPosition(position);
         
 
     }
 
     public double getposition() { // gets position
-        return extender.getEncoder().getPosition();
+        return grabber.getEncoder().getPosition();
     }
     
     

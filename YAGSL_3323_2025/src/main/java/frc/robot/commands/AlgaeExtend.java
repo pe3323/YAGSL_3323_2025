@@ -6,7 +6,9 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.Constants.AlgaeConstants;
 import frc.robot.subsystems.Algae;
+import frc.robot.subsystems.Lights;
 
 /** An example command that uses an example subsystem. */
 public class AlgaeExtend extends Command {
@@ -14,15 +16,17 @@ public class AlgaeExtend extends Command {
   private final Algae algae;
   private Timer timer = new Timer();
   private double time;
+private final Lights lightsSubsystem;
   /**
    * Creates a new ExampleCommand.
    *
    * @param subsystem The subsystem used by this command.
    */
-  public AlgaeExtend(Algae algae, double time) {
+  public AlgaeExtend(Algae algae, double time, Lights lightsSubsystem) {
     this.algae = algae;
+    this.lightsSubsystem = lightsSubsystem;
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(algae);
+    addRequirements(algae, lightsSubsystem);
   }
 
   // Called when the command is initially scheduled.
@@ -47,6 +51,12 @@ public class AlgaeExtend extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
+    //Hot Pink
+    if (algae.getposition() == AlgaeConstants.maxAlgaePosition) {
+      lightsSubsystem.setSolidColor(255, 31, 105);
+     }
+
+     
     return timer.hasElapsed(time);
   }
 }

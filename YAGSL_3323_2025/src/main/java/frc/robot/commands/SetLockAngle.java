@@ -10,6 +10,7 @@ import frc.robot.Constants.CoralConstants;
 import frc.robot.Constants.ElevatorConstants;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Elevator;
+import frc.robot.subsystems.Lights;
 import frc.robot.subsystems.swervedrive.Coral;
 
 
@@ -22,13 +23,16 @@ public class SetLockAngle extends Command {
   
   private double endPosition;
 
+  private Lights lightsSubsystem;
+
   /**
    * Creates a new ExampleCommand.
    *
    * @param subsystem The subsystem used by this command.
    */
-  public SetLockAngle(Climber lock, double angle) {
+  public SetLockAngle(Climber lock, double angle, Lights lightsSubsystem) {
     this.lock = lock;
+    this.lightsSubsystem = lightsSubsystem;
     lockController = lock.getLockController();
     endPosition = (angle/360);
     addRequirements(lock);
@@ -38,6 +42,7 @@ public class SetLockAngle extends Command {
   @Override
   public void initialize() {
     lockController.setSetpoint(endPosition);
+    lightsSubsystem.setSolidColor(136, 9, 227);
   }
     
 
@@ -59,6 +64,8 @@ public class SetLockAngle extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
+    lightsSubsystem.setSolidColor(255, 222, 33);
     return lockController.atSetpoint();
+    
   }
 }

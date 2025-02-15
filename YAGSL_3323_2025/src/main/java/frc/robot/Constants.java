@@ -71,8 +71,9 @@ public final class Constants
 
   public static final class CoralConstants {
     public static final int coralMotorId = 11;
-
-    public static final int coralGear = 20;//Not actually 20 lmao, this is a placeholder and nathan lied D:
+    public static final int coralPivotMotorId = 10;
+    public static final int coralGear = 20;
+    public static final int coralPivotGear = 20;
   }
 
   public static final class ClimberConstants {
@@ -83,6 +84,9 @@ public final class Constants
 
   public static final class AlgaeConstants {
     public static final int extenderMotorId = 14;
+    public static final int grabberMotorId = 15;
 
+    public static final double maxAlgaePosition = 43;
+    public static final double miniumumAlgaePostition = 0;
   }
 }

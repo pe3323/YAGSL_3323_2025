@@ -138,14 +138,7 @@ public class Robot extends TimedRobot
       CommandScheduler.getInstance().cancelAll();
     }
  
-       var alliance = DriverStation.getAlliance();
-      if (alliance.get() == DriverStation.Alliance.Red){
-        lightsSubsystem.setSolidColor (227, 5, 5);
-      }
-      else{
-        lightsSubsystem.setSolidColor (62, 62, 255);
-      }
- 
+      
  
  
   }

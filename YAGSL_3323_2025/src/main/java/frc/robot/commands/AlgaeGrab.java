@@ -4,46 +4,58 @@
 
 package frc.robot.commands;
 
-
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.subsystems.PneumaticsSubsystem;
+import frc.robot.Constants.ElevatorConstants;
+import frc.robot.subsystems.AlgaeGrabber;
+import frc.robot.subsystems.Elevator;
+
 
 /** An example command that uses an example subsystem. */
 public class AlgaeGrab extends Command {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
-  private final PneumaticsSubsystem algae;
+  
+  private AlgaeGrabber grabber;
+  private PIDController elevatorController;
+  private double endPosition;
 
   /**
    * Creates a new ExampleCommand.
    *
    * @param subsystem The subsystem used by this command.
    */
-  public AlgaeGrab(PneumaticsSubsystem algae) {
-    this.algae = algae;
-    // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(algae);
+  public AlgaeGrab(AlgaeGrabber grabber, double position) {
+    this.grabber = grabber;
+    elevatorController = grabber.getController();
+    endPosition = position;
+    addRequirements(grabber);
   }
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+    elevatorController.setSetpoint(endPosition);
+  }
+    
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() { 
-     algae.toggleExtend();
-    }
+  public void execute() {
+    grabber.setSpeed(elevatorController.calculate(grabber.getposition()));
+  }
+    
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-  
+    grabber.stop();
+    grabber.setPosition(endPosition);
+
   }
 
-  
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return true;
+    return elevatorController.atSetpoint();
   }
 }

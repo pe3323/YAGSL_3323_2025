@@ -6,10 +6,12 @@ package frc.robot.commands;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.Constants;
 import frc.robot.Constants.CoralConstants;
 import frc.robot.Constants.ElevatorConstants;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Elevator;
+import frc.robot.subsystems.Lights;
 import frc.robot.subsystems.swervedrive.Coral;
 
 
@@ -22,16 +24,19 @@ public class SetHarpoonAngle extends Command {
   
   private double endPosition;
 
+  private Lights lightsSubsystem;
+
   /**
    * Creates a new ExampleCommand.
    *
    * @param subsystem The subsystem used by this command.
    */
-  public SetHarpoonAngle(Climber harpoon, double angle) {
+  public SetHarpoonAngle(Climber harpoon, double angle, Lights lightsSubsystem) {
     this.harpoon = harpoon;
+    this.lightsSubsystem = lightsSubsystem;
     harpoonController = harpoon.getHarpoonController();
     endPosition = (angle/360);
-    addRequirements(harpoon);
+    addRequirements(harpoon, lightsSubsystem);
   }
 
   // Called when the command is initially scheduled.
@@ -59,6 +64,11 @@ public class SetHarpoonAngle extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
+     
+   /*  if (harpoon.getHarpoon() == (angle/360)){
+      lightsSubsystem.setSolidColor(245, 170, 7);*/
+    
     return harpoonController.atSetpoint();
+    }
   }
-}
+//}

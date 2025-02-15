@@ -4,9 +4,10 @@ import edu.wpi.first.wpilibj.AddressableLED;
     import edu.wpi.first.wpilibj.AddressableLEDBuffer;
     import edu.wpi.first.wpilibj.DriverStation;
     import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
     
 
- public class Lights {
+ public class Lights extends SubsystemBase {
     
 
         
@@ -46,7 +47,19 @@ import edu.wpi.first.wpilibj.AddressableLED;
             for (var i = 0; i < m_ledBuffer.getLength(); i++) {
                 
                 m_ledBuffer.setRGB(i, red, green, blue);
+               
              }
+
+             
+             m_led.setData(m_ledBuffer);
+        }
+        public void setStripedColor (int red, int green, int blue){
+            for (var i = 0; i < m_ledBuffer.getLength(); i++) {
+                
+                m_ledBuffer.setRGB(i, red, green, blue);
+               
+             }
+
              
              m_led.setData(m_ledBuffer);
         }

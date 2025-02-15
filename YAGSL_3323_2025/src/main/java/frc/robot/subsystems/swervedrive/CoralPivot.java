@@ -1,4 +1,4 @@
-package frc.robot.subsystems;
+package frc.robot.subsystems.swervedrive;
     
 import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
@@ -7,41 +7,36 @@ import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.ClosedLoopConfig.FeedbackSensor;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
-import com.revrobotics.spark.config.SoftLimitConfig;
 import com.revrobotics.spark.config.SparkMaxConfig;
 
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants.AlgaeConstants;
-import frc.robot.subsystems.Lights;
+import frc.robot.Constants.CoralConstants;
 
-public class Algae extends SubsystemBase {
-          
+public class CoralPivot extends SubsystemBase {
+    
 
 
-    private final SparkMax extender;
+    private final SparkMax coralPivot;
     private DigitalInput sensor;
     SparkClosedLoopController pidController;
 
-    public Algae() {
-        extender = new SparkMax(AlgaeConstants.extenderMotorId, MotorType.kBrushless); // makes new motor controller that is
+    private PIDController heightController;
+
+    public CoralPivot() {
+        coralPivot = new SparkMax(CoralConstants.coralPivotMotorId, MotorType.kBrushless); // makes new motor controller that is
         SparkMaxConfig config = new SparkMaxConfig();// defined as the motor for the arm
-        SoftLimitConfig softLimit = new SoftLimitConfig();
 
-
-
-        softLimit
-        .forwardSoftLimitEnabled(true)
-        .forwardSoftLimit(AlgaeConstants.maxAlgaePosition)
-        .reverseSoftLimitEnabled(true)
-        .reverseSoftLimit(AlgaeConstants.miniumumAlgaePostition);
-       
+        heightController = new PIDController(0.1, 0, 0);
+    heightController.setTolerance(0.1);
 
         config
         //.inverted(true)
-        .idleMode(IdleMode.kBrake)
-       .apply(softLimit);
+        .idleMode(IdleMode.kBrake);
+       coralPivot.getEncoder().setPosition(0);
+
 
         config.closedLoop
             .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
@@ -49,8 +44,7 @@ public class Algae extends SubsystemBase {
             .iZone(0)
             .outputRange(-1, 1);
 
-            extender.getEncoder().setPosition(0);
-       extender.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+       coralPivot.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
         sensor = new DigitalInput(1);
     }
 
@@ -59,40 +53,48 @@ public class Algae extends SubsystemBase {
 
     }
 
-    public void extend() { // raises the roof
+    public void raise() { // raises the roof
 
-        extender.set(-.30);
+        coralPivot.set(-.30);
         SmartDashboard.putBoolean("Sensor Value", sensor.get());
         
 
     
     }
 
-    // No more algae
-    public void retract() { // lowers the roof
+    // No more calamari
+    public void lower() { // lowers the roof
 
-        extender.set(.15);
+        coralPivot.set(.15);
         
 
     }
 
     public void stop() { // stops the roof
-        extender.set(0);
+        coralPivot.set(0);
 
     }
 
     public void setPosition(double position) { // lowers the roof
 
-        extender.getEncoder().setPosition(position);
+        coralPivot.getEncoder().setPosition(position);
         
 
     }
 
     public double getposition() { // gets position
-        return extender.getEncoder().getPosition();
+        return coralPivot.getEncoder().getPosition();
     }
-    
-    
+public double getHeight() {
+  return coralPivot.getEncoder().getPosition();
+}
 
+public PIDController getController() {
+  return heightController;
+}
+
+public void setSpeed(double i) {
+    coralPivot.set(i);
+}
 }
 
