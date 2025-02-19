@@ -8,9 +8,6 @@
           "type": "named",
           "data": {
             "name": "CoralPivot"
-          }
-        },
-        {
           "type": "parallel",
           "data": {
             "commands": [
@@ -73,7 +70,7 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "Level3"
+                  "name": "Level2"
                 }
               },
               {
