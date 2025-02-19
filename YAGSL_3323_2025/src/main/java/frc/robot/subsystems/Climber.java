@@ -27,7 +27,7 @@ public class Climber extends SubsystemBase {
 
   private final SparkMax harpoon;
   private final SparkMax lock;
-  private final SparkMax harpoonExtend;
+ 
   private PIDController lockController;
   private PIDController harpoonController;
   /** Creates a new ExampleSubsystem. */
@@ -37,7 +37,7 @@ public class Climber extends SubsystemBase {
     
     harpoon= new SparkMax(ClimberConstants.harpoonMotorId, MotorType.kBrushless);
     lock= new SparkMax(ClimberConstants.lockMotorId, MotorType.kBrushless);
-    harpoonExtend= new SparkMax(ClimberConstants.harpoonExtendMotorId, MotorType.kBrushless);
+    
     SparkMaxConfig harpoonConfig = new SparkMaxConfig();
     SparkMaxConfig lockConfig = new SparkMaxConfig();
     SoftLimitConfig softLimit = new SoftLimitConfig();
@@ -61,10 +61,10 @@ public class Climber extends SubsystemBase {
     
     harpoon.getEncoder().setPosition(0);
     lock.getEncoder().setPosition(0);
-    harpoonExtend.getEncoder().setPosition(0);
+ 
 
     harpoon.configure(harpoonConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
-    harpoonExtend.configure(lockConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+  
     lock.configure(lockConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
   }
@@ -73,10 +73,10 @@ public class Climber extends SubsystemBase {
   
 
   public void HarpoonExtend() {
-    harpoonExtend.set(.30);
+    harpoon.set(.30);
 }
 public void HarpoonRetract() {
-  harpoonExtend.set(.30);
+  harpoon.set(.30);
 }
 
 

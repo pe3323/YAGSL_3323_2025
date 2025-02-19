@@ -79,7 +79,7 @@ public final class Constants
   public static final class ClimberConstants {
     public static final int harpoonMotorId = 12;
     public static final int lockMotorId = 13;
-    public static final int harpoonExtendMotorId = 15;
+   
   }
 
   public static final class AlgaeConstants {
