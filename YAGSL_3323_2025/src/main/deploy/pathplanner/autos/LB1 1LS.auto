@@ -5,6 +5,12 @@
     "data": {
       "commands": [
         {
+          "type": "named",
+          "data": {
+            "name": "CoralPivot"
+          }
+        },
+        {
           "type": "path",
           "data": {
             "pathName": "LB to 1"

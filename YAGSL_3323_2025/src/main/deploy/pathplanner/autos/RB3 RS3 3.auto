@@ -5,75 +5,159 @@
     "data": {
       "commands": [
         {
-          "type": "path",
-          "data": {
-            "pathName": "RB to 3"
-          }
-        },
-        {
           "type": "named",
           "data": {
-            "name": "Level3"
+            "name": "CoralPivot"
           }
         },
         {
-          "type": "path",
+          "type": "parallel",
           "data": {
-            "pathName": "3 to RS"
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "RB to 3"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Level3"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "coralDeposit"
+                }
+              }
+            ]
           }
         },
         {
-          "type": "named",
+          "type": "parallel",
           "data": {
-            "name": "coralDeposit"
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "3 to RS"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Level0"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "coralDefault"
+                }
+              }
+            ]
           }
         },
         {
-          "type": "path",
+          "type": "parallel",
           "data": {
-            "pathName": "RS to 3"
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "RS to 3"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Level2"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "coralDefault"
+                }
+              }
+            ]
           }
         },
         {
-          "type": "named",
+          "type": "parallel",
           "data": {
-            "name": "Level2"
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "3 to RS"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Level0"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "coralDefault"
+                }
+              }
+            ]
           }
         },
         {
-          "type": "path",
+          "type": "parallel",
           "data": {
-            "pathName": "3 to RS"
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "RS to 3"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Level1"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "coralDefault"
+                }
+              }
+            ]
           }
         },
         {
-          "type": "named",
+          "type": "parallel",
           "data": {
-            "name": "coralDeposit"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "RS to 3"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Level1"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "3 to RS"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "coralDeposit"
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "3 to RS"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Level0"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "coralDefault"
+                }
+              }
+            ]
           }
         }
       ]

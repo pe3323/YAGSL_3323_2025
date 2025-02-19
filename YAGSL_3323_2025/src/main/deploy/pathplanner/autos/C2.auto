@@ -5,15 +5,34 @@
     "data": {
       "commands": [
         {
-          "type": "path",
+          "type": "named",
           "data": {
-            "pathName": "C to 2"
+            "name": "CoralPivot"
           }
         },
         {
-          "type": "named",
+          "type": "parallel",
           "data": {
-            "name": "Level3"
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "C to 2"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Level3"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "coralDeposit"
+                }
+              }
+            ]
           }
         }
       ]

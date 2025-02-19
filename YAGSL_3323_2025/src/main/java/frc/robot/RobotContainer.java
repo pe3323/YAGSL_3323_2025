@@ -23,6 +23,7 @@ import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.AlgaeExtend;
 import frc.robot.commands.AlgaeRetract;
 import frc.robot.commands.SetCoralAngle;
+import frc.robot.commands.SetCoralPivot;
 import frc.robot.commands.SetElevatorHeight;
 import frc.robot.commands.SetHarpoonAngle;
 import frc.robot.commands.SetLockAngle;
@@ -32,6 +33,7 @@ import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.Lights;
 import frc.robot.subsystems.PneumaticsSubsystem;
 import frc.robot.subsystems.swervedrive.Coral;
+import frc.robot.subsystems.swervedrive.CoralPivot;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 import java.io.File;
 import swervelib.SwerveInputStream;
@@ -52,6 +54,7 @@ public class RobotContainer {
   private final PneumaticsSubsystem pneumatic = new PneumaticsSubsystem();
   private final Climber climber = new Climber();
   private final Algae algae = new Algae();
+  private final CoralPivot coralPivot = new CoralPivot();
   private boolean level0 = true;
   private boolean level1 = false;
   private boolean level2 = false;
@@ -123,8 +126,8 @@ public class RobotContainer {
     NamedCommands.registerCommand("coralDeposit", new SetCoralAngle(coral, 125)); 
     NamedCommands.registerCommand("coralDefault", new SetCoralAngle(coral, 0));
     NamedCommands.registerCommand("algaeExtend", new AlgaeExtend(algae, 2, lightsSubsystem));
-   
     NamedCommands.registerCommand("algaeRetract", new AlgaeRetract(algae, 2, lightsSubsystem)); 
+    NamedCommands.registerCommand("CoralPivot", new SetCoralPivot(coralPivot, 45));
     
 
 
@@ -376,6 +379,12 @@ public class RobotContainer {
       public boolean isFinished(){
         return true;
       }
+
+      @Override
+      public void end(boolean interuppted){
+
+        algae.stop();
+      }
     });
 
     operatorXbox.rightTrigger().onTrue(new Command() {
@@ -387,6 +396,12 @@ public class RobotContainer {
       @Override
       public boolean isFinished(){
         return true;
+      }
+
+      @Override
+      public void end(boolean interuppted){
+
+        algae.stop();
       }
     });
 

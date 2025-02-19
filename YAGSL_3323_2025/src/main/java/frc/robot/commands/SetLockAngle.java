@@ -64,7 +64,7 @@ public class SetLockAngle extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    lightsSubsystem.setSolidColor(255, 222, 33);
+    lightsSubsystem.setSolidColor(255, 222, 33);   
     return lockController.atSetpoint();
     
   }
