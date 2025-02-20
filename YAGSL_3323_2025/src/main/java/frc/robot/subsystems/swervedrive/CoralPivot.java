@@ -45,7 +45,7 @@ public class CoralPivot extends SubsystemBase {
             .outputRange(-1, 1);
 
        coralPivot.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
-        sensor = new DigitalInput(1);
+        
     }
 
     public boolean HasNote() {

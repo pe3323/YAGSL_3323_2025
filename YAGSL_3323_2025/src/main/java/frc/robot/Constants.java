@@ -62,7 +62,6 @@ public final class Constants
         
     public static final double degreePerRot = 2.05;
     public static final int ele1 = 9;
-    public static final int ele2 = 10;
     public static final double gearRatio = 25;  // 25:1 -- motor : bar
     public static final double drumCircumferenceIn = 9.5; // C of rope reel
     public static final double robotHeight = 5.875;  // floor to top of robot base in inches

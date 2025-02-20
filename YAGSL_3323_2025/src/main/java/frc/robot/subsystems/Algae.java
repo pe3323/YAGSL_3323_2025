@@ -51,7 +51,6 @@ public class Algae extends SubsystemBase {
 
             extender.getEncoder().setPosition(0);
        extender.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
-        sensor = new DigitalInput(1);
     }
 
     public boolean HasNote() {

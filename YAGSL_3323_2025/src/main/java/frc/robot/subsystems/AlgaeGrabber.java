@@ -53,7 +53,7 @@ public class AlgaeGrabber extends SubsystemBase {
 
             grabber.getEncoder().setPosition(0);
        grabber.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
-        sensor = new DigitalInput(1);
+        
     }
 
     public boolean HasNote() {

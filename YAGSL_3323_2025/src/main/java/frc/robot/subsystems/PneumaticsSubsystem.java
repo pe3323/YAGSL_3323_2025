@@ -7,7 +7,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class PneumaticsSubsystem extends SubsystemBase {
     Compressor pcmCompressor = new Compressor(0, PneumaticsModuleType.CTREPCM);
-    Compressor phCompressor = new Compressor(1, PneumaticsModuleType.REVPH);
+   
     boolean compressorOn = false;
     boolean extended = false;
 

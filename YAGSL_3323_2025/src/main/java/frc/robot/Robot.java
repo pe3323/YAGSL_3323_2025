@@ -22,7 +22,6 @@ public class Robot extends TimedRobot
 {
   
   private final Lights lightsSubsystem = new Lights(0);
-  private final CoralPivot coralPivot= new CoralPivot();
   private static Robot   instance;
   private        Command m_autonomousCommand;
 
