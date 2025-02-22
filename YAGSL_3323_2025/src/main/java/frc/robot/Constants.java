@@ -43,7 +43,7 @@ public final class Constants
 
     // Hold time on motor brakes when disabled
     public static final double WHEEL_LOCK_TIME = 10; // seconds
-  }
+  }  
 
   public static class OperatorConstants
   {
@@ -62,7 +62,7 @@ public final class Constants
         
     public static final double degreePerRot = 2.05;
     public static final int ele1 = 9;
-    public static final double gearRatio = 10;  // 25:1 -- motor : bar
+    public static final double gearRatio = 100;  // 25:1 -- motor : bar
     public static final double drumCircumferenceIn = 9.5; // C of rope reel
     public static final double robotHeight = 5.875;  // floor to top of robot base in inches
   

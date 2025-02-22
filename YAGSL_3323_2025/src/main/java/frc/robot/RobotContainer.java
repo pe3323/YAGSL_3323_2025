@@ -228,8 +228,13 @@ public class RobotContainer {
             level1 = false;
             level2 = false;
             level3 = false;
+            SmartDashboard.putBoolean(getName(), level0);
+            SmartDashboard.putBoolean(getName(), level1);
+            SmartDashboard.putBoolean(getName(), level2);
+            SmartDashboard.putBoolean(getName(), level3);
           } else {
              toRun = new SetCoralAngle(coral, 0);
+             
           }
         }
 
@@ -255,6 +260,10 @@ public class RobotContainer {
             level1 = true;
             level2 = false;
             level3 = false;
+            SmartDashboard.putBoolean(getName(), level0);
+            SmartDashboard.putBoolean(getName(), level1);
+            SmartDashboard.putBoolean(getName(), level2);
+            SmartDashboard.putBoolean(getName(), level3);
           } else {
              toRun = new SetCoralAngle(coral, 45);
           }
@@ -282,6 +291,10 @@ public class RobotContainer {
             level1 = false;
             level2 = true;
             level3 = false;
+            SmartDashboard.putBoolean(getName(), level0);
+            SmartDashboard.putBoolean(getName(), level1);
+            SmartDashboard.putBoolean(getName(), level2);
+            SmartDashboard.putBoolean(getName(), level3);
           } else {
              toRun = new SetCoralAngle(coral, 45);
           }
@@ -309,8 +322,13 @@ public class RobotContainer {
             level1 = false;
             level2 = false;
             level3 = true;
+            SmartDashboard.putBoolean(getName(), level0);
+            SmartDashboard.putBoolean(getName(), level1);
+            SmartDashboard.putBoolean(getName(), level2);
+            SmartDashboard.putBoolean(getName(), level3);
           } else {
              toRun = new SetCoralAngle(coral, 0);
+
           }
         }
 
@@ -363,7 +381,7 @@ public class RobotContainer {
 
 
         driverXbox.a().onTrue(
-        new SetLockAngle(climber, 90, lightsSubsystem)  
+        new SetLockAngle(climber, 90, lightsSubsystem)
         );
        
         driverXbox.b().onTrue(
