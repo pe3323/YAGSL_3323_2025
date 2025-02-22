@@ -130,6 +130,7 @@ public class RobotContainer {
     NamedCommands.registerCommand("CoralPivot", new SetCoralPivot(coralPivot, 45));
     
 
+    lightsSubsystem.setSolidColor(128,128, 0);
 
 
     configureBindings();
@@ -276,7 +277,7 @@ public class RobotContainer {
         @Override
         public void initialize() {
           if (level2 = false){
-            toRun = new SetElevatorHeight(elevator, 41.5, lightsSubsystem );
+            toRun = new SetElevatorHeight(elevator,Constants.LEVEL2_HEIGHT, lightsSubsystem );
             level0 = false;
             level1 = false;
             level2 = true;
@@ -303,7 +304,7 @@ public class RobotContainer {
         @Override
         public void initialize() {
           if (level3 = false){
-            toRun = new SetElevatorHeight(elevator, 62, lightsSubsystem);
+            toRun = new SetElevatorHeight(elevator, Constants.LEVEL3_HEIGHT, lightsSubsystem);
             level0 = false;
             level1 = false;
             level2 = false;
@@ -366,13 +367,13 @@ public class RobotContainer {
         );
        
         driverXbox.b().onTrue(
-        new SetHarpoonAngle(climber, -90, lightsSubsystem)  
+        new SetLockAngle(climber, 0, lightsSubsystem)  
         );
     }
     operatorXbox.rightBumper().onTrue(new Command() {
       @Override
       public void execute() {
-        algae.extend();
+        algae.retract();
       }
 
       @Override
@@ -390,7 +391,7 @@ public class RobotContainer {
     operatorXbox.rightTrigger().onTrue(new Command() {
       @Override
       public void execute() {
-        algae.retract();
+        algae.extend();
       }
 
       @Override

@@ -6,6 +6,7 @@ package frc.robot.commands;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.Constants.ClimberConstants;
 import frc.robot.Constants.CoralConstants;
 import frc.robot.Constants.ElevatorConstants;
 import frc.robot.subsystems.Climber;
@@ -34,7 +35,7 @@ public class SetLockAngle extends Command {
     this.lock = lock;
     this.lightsSubsystem = lightsSubsystem;
     lockController = lock.getLockController();
-    endPosition = (angle/360);
+    endPosition = (ClimberConstants.lockGear*(angle/360));
     addRequirements(lock);
   }
 

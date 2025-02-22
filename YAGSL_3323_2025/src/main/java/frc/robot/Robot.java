@@ -21,7 +21,7 @@ import frc.robot.subsystems.swervedrive.CoralPivot;
 public class Robot extends TimedRobot
 {
   
-  private final Lights lightsSubsystem = new Lights(0);
+ // private final Lights lightsSubsystem = new Lights(0);
   private static Robot   instance;
   private        Command m_autonomousCommand;
 
@@ -111,7 +111,7 @@ public class Robot extends TimedRobot
     // schedule the autonomous command (example)
     if (m_autonomousCommand != null)
     {
-      lightsSubsystem.setSolidColor (65, 11, 97);
+    //  lightsSubsystem.setSolidColor (65, 11, 97);
       m_autonomousCommand.schedule();
       
       
