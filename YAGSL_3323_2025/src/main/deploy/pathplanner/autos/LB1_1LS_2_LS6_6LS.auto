@@ -1,0 +1,169 @@
+{
+  "version": "2025.0",
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "named",
+          "data": {
+            "name": "CoralPivot"
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "LB_to_1"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Level3"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "coralDeposit"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "1_to_LS"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Level0"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "coralDefault"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "LS_to_1"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Level2"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "coralDeposit"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "1_to_LS"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Level0"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "coralDefault"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "LS_to_6"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Level3"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "coralDeposit"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "6_to_LS"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Level0"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "coralDefault"
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  },
+  "resetOdom": true,
+  "folder": null,
+  "choreoAuto": false
+}
