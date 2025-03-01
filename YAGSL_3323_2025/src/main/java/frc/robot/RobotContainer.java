@@ -17,6 +17,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.OperatorConstants;
@@ -31,7 +32,7 @@ import frc.robot.subsystems.Algae;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.Lights;
-import frc.robot.subsystems.PneumaticsSubsystem;
+import frc.robot.subsystems.AlgaeGrabber;
 import frc.robot.subsystems.swervedrive.Coral;
 import frc.robot.subsystems.swervedrive.CoralPivot;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
@@ -51,10 +52,10 @@ public class RobotContainer {
 
   private final Elevator elevator = new Elevator();
   private final Coral coral = new Coral();
-  private final PneumaticsSubsystem pneumatic = new PneumaticsSubsystem();
   private final Climber climber = new Climber();
   private final Algae algae = new Algae();
   private final CoralPivot coralPivot = new CoralPivot();
+  private final AlgaeGrabber algaeGrabber = new AlgaeGrabber();
   private boolean level0 = true;
   private boolean level1 = false;
   private boolean level2 = false;
@@ -119,10 +120,10 @@ public class RobotContainer {
   public RobotContainer() {
     // Configure the trigger bindings
 
-    NamedCommands.registerCommand("Level0", new SetElevatorHeight(elevator, 0, lightsSubsystem));  
-    NamedCommands.registerCommand("Level1", new SetElevatorHeight(elevator, Constants.LEVEL1_HEIGHT, lightsSubsystem)); 
-    NamedCommands.registerCommand("Level2", new SetElevatorHeight(elevator, Constants.LEVEL2_HEIGHT, lightsSubsystem)); 
-    NamedCommands.registerCommand("Level3", new SetElevatorHeight(elevator, Constants.LEVEL3_HEIGHT, lightsSubsystem)); 
+    NamedCommands.registerCommand("Level0", new SetElevatorHeight(elevator, 0));  
+    NamedCommands.registerCommand("Level1", new SetElevatorHeight(elevator, Constants.LEVEL1_HEIGHT)); 
+    NamedCommands.registerCommand("Level2", new SetElevatorHeight(elevator, Constants.LEVEL2_HEIGHT)); 
+    NamedCommands.registerCommand("Level3", new SetElevatorHeight(elevator, Constants.LEVEL3_HEIGHT)); 
     NamedCommands.registerCommand("coralDeposit", new SetCoralAngle(coral, 125)); 
     NamedCommands.registerCommand("coralDefault", new SetCoralAngle(coral, 0));
     NamedCommands.registerCommand("algaeExtend", new AlgaeExtend(algae, 2, lightsSubsystem));
@@ -138,18 +139,18 @@ public class RobotContainer {
     NamedCommands.registerCommand("test", Commands.print("I EXIST"));
 
     // Add autonomous commands here  
-    m_chooser.setDefaultOption("Do nothing", new PathPlannerAuto("C2"));
+    m_chooser.setDefaultOption("Do_Nothing", new PathPlannerAuto("C2"));
     m_chooser.addOption("Default", new PathPlannerAuto("Default"));
-    m_chooser.addOption("LB1 1LS", new PathPlannerAuto("LB1 1LS"));
-    m_chooser.addOption("RB3 3RS", new PathPlannerAuto("RB3 3RS"));
-    m_chooser.addOption("LB1 1LS 2", new PathPlannerAuto("LB1 1LS 2"));
-    m_chooser.addOption("RB3 3RS 2", new PathPlannerAuto("RB3 3RS 2"));
-    m_chooser.addOption("RB3 RS3 3", new PathPlannerAuto("RB3 RS3 3"));
-    m_chooser.addOption("LB1 LS1 3", new PathPlannerAuto("LB1 LS1 3"));
-    m_chooser.addOption("RB3 3RS RS4 4RS", new PathPlannerAuto("RB3 3RS RS4 4RS"));
-    m_chooser.addOption("RB3 3RS RS4 4RS 2", new PathPlannerAuto("Rb3 3RS RS4 4RS 2"));
-    m_chooser.addOption("LB1 1LS LS6 6LS LS5", new PathPlannerAuto("Lb1 1LS LS6 6LS LS5"));
-    m_chooser.addOption("LB1 1LS 2 LS6 6LS", new PathPlannerAuto("LB1 1LS 2 LS6 6LS"));
+    m_chooser.addOption("LB1_1LS", new PathPlannerAuto("LB1_1LS"));
+    m_chooser.addOption("RB3_3RS", new PathPlannerAuto("RB3_3RS"));
+    m_chooser.addOption("LB1_1LS_2", new PathPlannerAuto("LB1_1LS_2"));
+    m_chooser.addOption("RB3_3RS_2", new PathPlannerAuto("RB3_3RS_2"));
+    m_chooser.addOption("RB3_RS3_3", new PathPlannerAuto("RB3_RS3_3"));
+    m_chooser.addOption("LB1_LS1_3", new PathPlannerAuto("LB1_LS1_3"));
+    m_chooser.addOption("RB3_3RS_RS4_4RS", new PathPlannerAuto("RB3_3RS_RS4_4RS"));
+    m_chooser.addOption("RB3_3RS_RS4_4RS_2", new PathPlannerAuto("RB3_3RS_RS4_4RS_2"));
+    m_chooser.addOption("LB1_1LS_LS6_6LS_LS5", new PathPlannerAuto("LB1_1LS_LS6_6LS_LS5"));
+    m_chooser.addOption("LB1_1LS_2_LS6_6LS", new PathPlannerAuto("LB1_1LS_2_LS6_6LS"));
 
 
     SmartDashboard.putData("Autonomous Mode", m_chooser);
@@ -211,19 +212,29 @@ public class RobotContainer {
       
 
 
+     
+
+
+
+      //operatorXbox.a().onTrue( new  SetElevatorHeight(elevator, Constants.LEVEL0_HEIGHT) );
+      //operatorXbox.x().onTrue( new  SetElevatorHeight(elevator, Constants.LEVEL1_HEIGHT) );
+      //operatorXbox.b().onTrue( new  SetElevatorHeight(elevator, Constants.LEVEL2_HEIGHT) );
+      //operatorXbox.y().onTrue( new  SetElevatorHeight(elevator, Constants.LEVEL3_HEIGHT) );
+
+      operatorXbox.a().onTrue( new  ConditionalCommand(new SetCoralAngle(coral, 0), new SetElevatorHeight(elevator, Constants.LEVEL0_HEIGHT), () -> elevator.atLevel0()));
+      operatorXbox.x().onTrue( new  ConditionalCommand(new SetCoralAngle(coral, 45), new SetElevatorHeight(elevator, Constants.LEVEL1_HEIGHT), () -> elevator.atLevel1()));
+      operatorXbox.b().onTrue( new  ConditionalCommand(new SetCoralAngle(coral, 45), new SetElevatorHeight(elevator, Constants.LEVEL2_HEIGHT), () -> elevator.atLevel2()));
+      operatorXbox.y().onTrue( new  ConditionalCommand(new SetCoralAngle(coral, 0), new SetElevatorHeight(elevator, Constants.LEVEL3_HEIGHT), () -> elevator.atLevel3()));
+
+
       /*
-       * Describe what you're trying to do here..
-       * SetElevatorHeight is already a command.
-       * Are you sure you don't want to use SequentialCommandGroup here instead?
-       * a -> b -> c ....
-       */
       operatorXbox.a().onTrue( new Command() {
 
         Command toRun;
         @Override
         public void initialize() {
-          if (level0 = false){
-            toRun = new SetElevatorHeight(elevator, 0, lightsSubsystem);
+          if (!level0){
+            toRun = new SetElevatorHeight(elevator, 0);
             level0 = true;
             level1 = false;
             level2 = false;
@@ -249,12 +260,17 @@ public class RobotContainer {
         }
       });
 
+
       operatorXbox.x().onTrue( new Command() {
+
 
         Command toRun;
         @Override
         public void initialize() {
-          if (level1 = false){
+          System.out.println( "L1 inited");
+          if (!level1){
+            System.out.println( "Switching to elevator");
+
             toRun = new SetElevatorHeight(elevator, Constants.LEVEL1_HEIGHT, lightsSubsystem);
             level0 = false;
             level1 = true;
@@ -265,12 +281,14 @@ public class RobotContainer {
             SmartDashboard.putBoolean(getName(), level2);
             SmartDashboard.putBoolean(getName(), level3);
           } else {
+            System.out.println( "Switching to coral");
              toRun = new SetCoralAngle(coral, 45);
           }
         }
 
         @Override
         public void execute() {
+          System.out.println( "Executing Level 1");
           toRun.execute();
         }
 
@@ -280,13 +298,14 @@ public class RobotContainer {
         }
       });
        
+
       operatorXbox.b().onTrue( new Command() {
 
         Command toRun;
         @Override
         public void initialize() {
-          if (level2 = false){
-            toRun = new SetElevatorHeight(elevator,Constants.LEVEL2_HEIGHT, lightsSubsystem );
+          if (!level2){
+            toRun = new SetElevatorHeight(elevator,Constants.LEVEL2_HEIGHT );
             level0 = false;
             level1 = false;
             level2 = true;
@@ -316,8 +335,8 @@ public class RobotContainer {
         Command toRun;
         @Override
         public void initialize() {
-          if (level3 = false){
-            toRun = new SetElevatorHeight(elevator, Constants.LEVEL3_HEIGHT, lightsSubsystem);
+          if (!level3){
+            toRun = new SetElevatorHeight(elevator, Constants.LEVEL3_HEIGHT);
             level0 = false;
             level1 = false;
             level2 = false;
@@ -342,51 +361,95 @@ public class RobotContainer {
           return toRun.isFinished();
         }
       });
-        operatorXbox.leftBumper().onTrue(new Command() {
+      */
+        operatorXbox.leftBumper().whileTrue(new Command() {
           @Override
           public void execute() {
-            pneumatic.toggleExtendandRetract();
+           algaeGrabber.grab(); 
           }
     
           @Override
+          public void end(boolean interrupted) {
+            algaeGrabber.stop();
+          }
+
+          @Override
           public boolean isFinished(){
-            return true;
+            return false;
           }
         });
 
-        driverXbox.leftBumper().onTrue(new Command() {
+        operatorXbox.leftTrigger().whileTrue(new Command() {
+          @Override
+          public void execute() {
+           algaeGrabber.release(); 
+          }
+    
+          @Override
+          public void end(boolean interrupted) {
+            algaeGrabber.stop();
+          }
+
+          @Override
+          public boolean isFinished(){
+            return false;
+          }
+        });
+
+
+        // end game - what follows are commands that  handle the
+        // end of teleop mode.
+        //driverXbox.leftBumper().onTrue(new ConditionalCommand())
+
+
+        // Extend the harpoon and then pull us in.
+        driverXbox.leftBumper().whileTrue(new Command() {
           @Override
           public void execute() {
             climber.HarpoonRetract();
           }
     
           @Override
+          public void end(boolean interrupted) {
+            climber.stopHarpoon();
+          };
+
+          @Override
           public boolean isFinished(){
-            return true;
+            return false;
           }
         });
 
 
-        driverXbox.rightBumper().onTrue(new Command() {
+        driverXbox.rightBumper().whileTrue(new Command() {
           @Override
           public void execute() {
             climber.HarpoonExtend();
-          }
+            SmartDashboard.putNumber("HarpoonRots", climber.getHarpoon());
+          } 
     
           @Override
+          public void end(boolean interrupted) {
+            climber.stopHarpoon();
+          };
+
+          @Override
           public boolean isFinished(){
-            return true;
+            return false;
           }
         });
 
 
+        // These commands handle the foot/hook/anchor thing
         driverXbox.a().onTrue(
-        new SetLockAngle(climber, 90, lightsSubsystem)
+        new SetLockAngle(climber, -2, lightsSubsystem)
         );
        
         driverXbox.b().onTrue(
         new SetLockAngle(climber, 0, lightsSubsystem)  
         );
+
+
     }
     operatorXbox.rightBumper().onTrue(new Command() {
       @Override

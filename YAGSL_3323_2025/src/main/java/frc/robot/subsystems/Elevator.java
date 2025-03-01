@@ -17,6 +17,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import frc.robot.Constants.ElevatorConstants;
+import frc.robot.Constants;
 
 public class Elevator extends SubsystemBase {
 
@@ -26,33 +27,26 @@ public class Elevator extends SubsystemBase {
   /** Creates a new ExampleSubsystem. */
   public Elevator() {
 
-    heightController = new PIDController(0.1, 0, 0);
-    heightController.setTolerance(0.1);
+    heightController = new PIDController(.2, 0, 0);
+    heightController.setTolerance(0.01);
     
     elevator1= new SparkMax(ElevatorConstants.ele1, MotorType.kBrushless);
     
-    SparkMaxConfig config = new SparkMaxConfig();
+    SparkMaxConfig config = new SparkMaxConfig();  
     SoftLimitConfig softLimit = new SoftLimitConfig();
 
     softLimit
     .forwardSoftLimitEnabled(true)
-    .forwardSoftLimit(72)
+    .forwardSoftLimit(400)
     .reverseSoftLimitEnabled(true)
     .reverseSoftLimit(0);
     
     config
-    //.inverted(true)
+    .inverted(true)
     .idleMode(IdleMode.kBrake)
     .apply(softLimit);
 
-   
-    
-
-    
-
     elevator1.getEncoder().setPosition(0);
-   
-
     elevator1.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
   
 
@@ -76,45 +70,52 @@ public class Elevator extends SubsystemBase {
     
   }
 
+  public boolean atLevel0(){
+    if (elevator1.getEncoder().getPosition() == Constants.LEVEL0_HEIGHT){
+      return true;
+    }
+    else{
+      return false;
+    }
+  }
+
+  public boolean atLevel1(){
+    if (elevator1.getEncoder().getPosition() == Constants.LEVEL1_HEIGHT){
+      return true;
+    }
+    else{
+      return false;
+    }
+  }
+
+  public boolean atLevel2(){
+    if (elevator1.getEncoder().getPosition() == Constants.LEVEL2_HEIGHT){
+      return true;
+    }
+    else{
+      return false;
+    }
+  }
+
+  public boolean atLevel3(){
+    if (elevator1.getEncoder().getPosition() == Constants.LEVEL3_HEIGHT){
+      return true;
+    }
+    else{
+      return false;
+    }
+  }
+
   public double getPosition() {
     return elevator1.getEncoder().getPosition();
   }
 
   public void setPosition(double position) { // raises the roof
-
-    System.out.println( "Setting the position to : " + position );
     double targetPosition = ElevatorConstants.gearRatio*(position/ElevatorConstants.drumCircumferenceIn)+ElevatorConstants.robotHeight;
-
     elevator1.getClosedLoopController().setReference(targetPosition, ControlType.kPosition);
-
-
-    elevator1.getEncoder().setPosition(targetPosition);
-    
-    
   }    
-  /**
-   * Example command factory method.
-   *
-   * @return a command
-   */
-  public Command exampleMethodCommand() {
-    // Inline construction of command goes here.
-    // Subsystem::RunOnce implicitly requires `this` subsystem.
-    return runOnce(
-        () -> {
-          /* one-time action goes here */
-        });
-  }
 
-  /**
-   * An example method querying a boolean state of the subsystem (for example, a digital sensor).
-   *
-   * @return value of some boolean subsystem state, such as a digital sensor.
-   */
-  public boolean exampleCondition() {
-    // Query some boolean state, such as a digital sensor.
-    return false;
-  }
+
 
   @Override
   public void periodic() {
@@ -127,17 +128,17 @@ public class Elevator extends SubsystemBase {
   }
 
 
-public void setSpeed(double i) {
-    elevator1.set(i);
-   
-}
+  public void setSpeed(double i) {
+      elevator1.set(i);
+    
+  }
 
 
-public double getHeight() {
-  return elevator1.getEncoder().getPosition();
-}
+  public double getHeight() {
+    return elevator1.getEncoder().getPosition();
+  }
 
-public PIDController getController() {
-  return heightController;
-}
+  public PIDController getController() {
+    return heightController;
+  }
 }

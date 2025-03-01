@@ -25,6 +25,10 @@ import frc.robot.Constants.ElevatorConstants;
 
 public class Climber extends SubsystemBase {
 
+  public static final int EXTENDED = 1;
+  public static final int RETRACTED = 0;
+  private int state = RETRACTED;
+
   private final SparkMax harpoon;
   private final SparkMax lock;
  
@@ -33,7 +37,7 @@ public class Climber extends SubsystemBase {
   /** Creates a new ExampleSubsystem. */
   public Climber() {
 
-
+    lockController = new PIDController(.5, 0, 0);
     
     harpoon= new SparkMax(ClimberConstants.harpoonMotorId, MotorType.kBrushless);
     lock= new SparkMax(ClimberConstants.lockMotorId, MotorType.kBrushless);
@@ -44,7 +48,7 @@ public class Climber extends SubsystemBase {
 
     softLimit
     .forwardSoftLimitEnabled(true)
-    .forwardSoftLimit(32)
+    .forwardSoftLimit(150)
     .reverseSoftLimitEnabled(true)
     .reverseSoftLimit(0);
 
@@ -70,14 +74,27 @@ public class Climber extends SubsystemBase {
   }
 
 
-  
+  public void setState( int state ) {
+    if ( state == EXTENDED ){
+      HarpoonExtend();
+    } 
+    if ( state == RETRACTED ){
+      HarpoonRetract();
+    }
+    this.state = state;
+  }
+
+  public int getState() {
+    return state;
+  }
 
   public void HarpoonExtend() {
-    harpoon.set(.30);
-}
-public void HarpoonRetract() {
-  harpoon.set(.30);
-}
+    harpoon.set(.80);
+  }
+
+  public void HarpoonRetract() {
+    harpoon.set(-0.80);
+  }
 
 
 
@@ -92,6 +109,7 @@ public void HarpoonRetract() {
 
 public void stopHarpoon() { // stops the roof
   harpoon.set(0);
+
 
 }
 

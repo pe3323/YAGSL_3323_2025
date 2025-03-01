@@ -11,23 +11,23 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
     
 
         
-        private final AddressableLED m_led;
+        private final AddressableLED m_led = null;
         private final AddressableLEDBuffer m_ledBuffer;
     
         public Lights (int port){
             // PWM port 0
         // Must be a PWM header, not MXP or DIO
-        m_led = new AddressableLED(port);
+        //m_led = new AddressableLED(port);
     
         // Reuse buffer
         // Default to a length of 60, start empty output
         // Length is expensive to set, so only set it once, then just update data
         m_ledBuffer = new AddressableLEDBuffer(60);
-        m_led.setLength(m_ledBuffer.getLength());
+        //m_led.setLength(m_ledBuffer.getLength());
     
         // Set the data
-        m_led.setData(m_ledBuffer);
-        m_led.start();
+        //m_led.setData(m_ledBuffer);
+        //m_led.start();
     
         // Set default color to purple
         var alliance = DriverStation.getAlliance();
@@ -51,7 +51,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
              }
 
              
-             m_led.setData(m_ledBuffer);
+             //m_led.setData(m_ledBuffer);
         }
         public void setStripedColor (int red, int green, int blue){
             for (var i = 0; i < m_ledBuffer.getLength(); i++) {
@@ -61,7 +61,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
              }
 
              
-             m_led.setData(m_ledBuffer);
+             //m_led.setData(m_ledBuffer);
         }
     }
     

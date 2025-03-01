@@ -35,7 +35,7 @@ public class SetLockAngle extends Command {
     this.lock = lock;
     this.lightsSubsystem = lightsSubsystem;
     lockController = lock.getLockController();
-    endPosition = (ClimberConstants.lockGear*(angle/360));
+    endPosition = (angle);
     addRequirements(lock);
   }
 

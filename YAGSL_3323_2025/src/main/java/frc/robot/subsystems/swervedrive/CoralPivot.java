@@ -20,7 +20,6 @@ public class CoralPivot extends SubsystemBase {
 
 
     private final SparkMax coralPivot;
-    private DigitalInput sensor;
     SparkClosedLoopController pidController;
 
     private PIDController heightController;
@@ -48,18 +47,9 @@ public class CoralPivot extends SubsystemBase {
         
     }
 
-    public boolean HasNote() {
-        return sensor.get();
-
-    }
-
     public void raise() { // raises the roof
 
-        coralPivot.set(-.30);
-        SmartDashboard.putBoolean("Sensor Value", sensor.get());
-        
-
-    
+        coralPivot.set(-.30);    
     }
 
     // No more calamari

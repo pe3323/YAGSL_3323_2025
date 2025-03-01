@@ -21,7 +21,6 @@ public class Algae extends SubsystemBase {
 
 
     private final SparkMax extender;
-    private DigitalInput sensor;
     SparkClosedLoopController pidController;
 
     public Algae() {
@@ -53,17 +52,9 @@ public class Algae extends SubsystemBase {
        extender.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
     }
 
-    public boolean HasNote() {
-        return sensor.get();
-
-    }
-
     public void extend() { // raises the roof
 
         extender.set(-.30);
-        SmartDashboard.putBoolean("Sensor Value", sensor.get());
-        
-
     
     }
 
