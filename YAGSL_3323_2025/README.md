@@ -51,3 +51,6 @@ Without their hardwork debugging the issue with feedforwards the 2024 release wo
 
 # Support our developers!
 <a href='https://ko-fi.com/yagsl' target='_blank'><img height='35' style='border:0px;height:46px;' src='https://az743702.vo.msecnd.net/cdn/kofi3.png?v=0' border='0' alt='Buy Me a Robot at ko-fi.com'></a>
+
+# Some suggestions
+- code refactoring, etc.
