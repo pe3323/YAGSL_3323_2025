@@ -29,7 +29,8 @@ public class Algae extends SubsystemBase {
         SoftLimitConfig softLimit = new SoftLimitConfig();
 
 
-
+        extender.clearFaults();
+        
         softLimit
         .forwardSoftLimitEnabled(true)
         .forwardSoftLimit(AlgaeConstants.maxAlgaePosition)
@@ -54,14 +55,14 @@ public class Algae extends SubsystemBase {
 
     public void extend() { // raises the roof
 
-        extender.set(-.30);
+        extender.set(.50);
     
     }
 
     // No more algae
     public void retract() { // lowers the roof
 
-        extender.set(.15);
+        extender.set(-.50);
         
 
     }

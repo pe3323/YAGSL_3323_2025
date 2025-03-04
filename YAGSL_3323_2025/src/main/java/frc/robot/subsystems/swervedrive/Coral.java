@@ -28,20 +28,17 @@ public class Coral extends SubsystemBase {
     public Coral() {
         coral = new SparkMax(CoralConstants.coralMotorId, MotorType.kBrushless); // makes new motor controller that is
         SparkMaxConfig config = new SparkMaxConfig();// defined as the motor for the arm
-
-        heightController = new PIDController(0.1, 0, 0);
+        coral.clearFaults();
+        heightController = new PIDController(., 0, 0);
     heightController.setTolerance(0.1);
 
         config
-        //.inverted(true)
+        .inverted(true)
         .idleMode(IdleMode.kBrake);
        coral.getEncoder().setPosition(0);
 
 
         config.closedLoop
-            .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
-            .pidf(1.0, 0.0, 0.0, 0.0)
-            .iZone(0)
             .outputRange(-1, 1);
 
        coral.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);

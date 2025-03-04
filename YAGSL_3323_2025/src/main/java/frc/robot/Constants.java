@@ -73,8 +73,8 @@ public final class Constants
   public static final class CoralConstants {
     public static final int coralMotorId = 11;
     public static final int coralPivotMotorId = 10;
-    public static final int coralGear = 1;
-    public static final int coralPivotGear = 1;
+    public static final int coralGear = 10;
+    public static final int coralPivotGear = 20;
   }
 
   public static final class ClimberConstants {
@@ -89,7 +89,7 @@ public final class Constants
     public static final int grabberMotorId = 15;
     public static final int grabberGear = 1;
 
-    public static final double maxAlgaePosition = 43;
+    public static final double maxAlgaePosition = 163;
     public static final double miniumumAlgaePostition = 0;
   }
 }

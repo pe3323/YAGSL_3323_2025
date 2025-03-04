@@ -202,13 +202,13 @@ public class RobotContainer {
       driverXbox.leftBumper().onTrue(Commands.none());
       driverXbox.rightBumper().onTrue(Commands.none());
     } else {
-      driverXbox.a().onTrue((Commands.runOnce(drivebase::zeroGyro)));
-      driverXbox.x().onTrue(Commands.runOnce(drivebase::addFakeVisionReading));
+      driverXbox.y().onTrue((Commands.runOnce(drivebase::zeroGyro)));
+      /* driverXbox.x().onTrue(Commands.runOnce(drivebase::addFakeVisionReading));
       driverXbox.b().whileTrue(
           drivebase.driveToPose(
               new Pose2d(new Translation2d(4, 4), Rotation2d.fromDegrees(0))));
       driverXbox.start().whileTrue(Commands.none());
-      driverXbox.back().whileTrue(Commands.none());
+      driverXbox.back().whileTrue(Commands.none()); */
       
 
 
@@ -451,33 +451,32 @@ public class RobotContainer {
 
 
     }
-    operatorXbox.rightBumper().onTrue(new Command() {
+    operatorXbox.rightBumper().whileTrue(new Command() {
       @Override
       public void execute() {
         algae.retract();
       }
 
-      @Override
-      public boolean isFinished(){
-        return true;
-      }
 
       @Override
       public void end(boolean interuppted){
 
         algae.stop();
       }
+
+      @Override
+      public boolean isFinished(){
+        return false;
+      }
+
+     
     });
 
-    operatorXbox.rightTrigger().onTrue(new Command() {
+    operatorXbox.rightTrigger().whileTrue(new Command() {
       @Override
       public void execute() {
         algae.extend();
-      }
-
-      @Override
-      public boolean isFinished(){
-        return true;
+        SmartDashboard.putNumber("AlgaeRots", algae.getposition());
       }
 
       @Override
@@ -485,6 +484,13 @@ public class RobotContainer {
 
         algae.stop();
       }
+
+      @Override
+      public boolean isFinished(){
+        return false;
+      }
+
+      
     });
 
   }

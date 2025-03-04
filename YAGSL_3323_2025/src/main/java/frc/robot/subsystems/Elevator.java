@@ -13,6 +13,7 @@ import com.revrobotics.spark.config.SoftLimitConfig;
 import com.revrobotics.spark.config.SparkMaxConfig;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
@@ -22,7 +23,7 @@ import frc.robot.Constants;
 public class Elevator extends SubsystemBase {
 
   private final SparkMax elevator1;
-  
+  private int level = 0;
   private PIDController heightController;
   /** Creates a new ExampleSubsystem. */
   public Elevator() {
@@ -69,41 +70,27 @@ public class Elevator extends SubsystemBase {
     elevator1.set(0);
     
   }
-
+ public void setLevel ( int level) {
+  this.level = level;
+ }
   public boolean atLevel0(){
-    if (elevator1.getEncoder().getPosition() == Constants.LEVEL0_HEIGHT){
-      return true;
-    }
-    else{
-      return false;
-    }
+    SmartDashboard.putNumber("level", level);
+    return level == 0;
   }
 
   public boolean atLevel1(){
-    if (elevator1.getEncoder().getPosition() == Constants.LEVEL1_HEIGHT){
-      return true;
-    }
-    else{
-      return false;
-    }
+    SmartDashboard.putNumber("level", level);
+    return level == 1;
   }
 
   public boolean atLevel2(){
-    if (elevator1.getEncoder().getPosition() == Constants.LEVEL2_HEIGHT){
-      return true;
-    }
-    else{
-      return false;
-    }
+    SmartDashboard.putNumber("level", level);
+    return level == 2;
   }
 
   public boolean atLevel3(){
-    if (elevator1.getEncoder().getPosition() == Constants.LEVEL3_HEIGHT){
-      return true;
-    }
-    else{
-      return false;
-    }
+    SmartDashboard.putNumber("level", level);
+    return level == 3;
   }
 
   public double getPosition() {

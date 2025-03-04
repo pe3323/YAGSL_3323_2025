@@ -41,6 +41,19 @@ public class SetElevatorHeight extends Command {
   public void initialize() {
     SmartDashboard.putNumber("Target height: ", endPosition);
     elevatorController.setSetpoint(endPosition);
+
+    if ( endPosition == ElevatorConstants.gearRatio*(Constants.LEVEL0_HEIGHT/ElevatorConstants.drumCircumferenceIn) ) {
+      elevator.setLevel(0);
+    }
+    if ( endPosition == ElevatorConstants.gearRatio*(Constants.LEVEL1_HEIGHT/ElevatorConstants.drumCircumferenceIn) ) {
+      elevator.setLevel(1);
+    }
+    if ( endPosition == ElevatorConstants.gearRatio*(Constants.LEVEL2_HEIGHT/ElevatorConstants.drumCircumferenceIn) ) {
+      elevator.setLevel(2);
+    }
+    if ( endPosition == ElevatorConstants.gearRatio*(Constants.LEVEL3_HEIGHT/ElevatorConstants.drumCircumferenceIn) ) {
+      elevator.setLevel(3);
+    }    
     //lightsSubsystem.setSolidColor(19, 173, 14);
   }
     
@@ -62,7 +75,7 @@ public class SetElevatorHeight extends Command {
   public void end(boolean interrupted) {
     elevator.stop();
     elevator.setPosition(endPosition);
-
+    SmartDashboard.putNumber("Current Height", elevator.getHeight());
   }
 
   // Returns true when the command should end.
