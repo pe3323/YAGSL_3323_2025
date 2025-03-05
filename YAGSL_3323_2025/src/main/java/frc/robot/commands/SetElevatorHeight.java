@@ -32,7 +32,10 @@ public class SetElevatorHeight extends Command {
     this.elevator = elevator;
     //this.lightsSubsystem = lightsSubsystem;
     elevatorController = elevator.getController();
-    endPosition = ElevatorConstants.gearRatio*(position/ElevatorConstants.drumCircumferenceIn);
+    if (position ==  0)
+     endPosition = 0;
+    else
+      endPosition = ElevatorConstants.gearRatio*((position-ElevatorConstants.robotHeight)/ElevatorConstants.drumCircumferenceIn);
     addRequirements(elevator);
   }
 
@@ -45,13 +48,13 @@ public class SetElevatorHeight extends Command {
     if ( endPosition == ElevatorConstants.gearRatio*(Constants.LEVEL0_HEIGHT/ElevatorConstants.drumCircumferenceIn) ) {
       elevator.setLevel(0);
     }
-    if ( endPosition == ElevatorConstants.gearRatio*(Constants.LEVEL1_HEIGHT/ElevatorConstants.drumCircumferenceIn) ) {
+    if ( endPosition == ElevatorConstants.gearRatio*((Constants.LEVEL1_HEIGHT-ElevatorConstants.robotHeight)/ElevatorConstants.drumCircumferenceIn) ) {
       elevator.setLevel(1);
     }
-    if ( endPosition == ElevatorConstants.gearRatio*(Constants.LEVEL2_HEIGHT/ElevatorConstants.drumCircumferenceIn) ) {
+    if ( endPosition == ElevatorConstants.gearRatio*((Constants.LEVEL2_HEIGHT-ElevatorConstants.robotHeight)/ElevatorConstants.drumCircumferenceIn) ) {
       elevator.setLevel(2);
     }
-    if ( endPosition == ElevatorConstants.gearRatio*(Constants.LEVEL3_HEIGHT/ElevatorConstants.drumCircumferenceIn) ) {
+    if ( endPosition == ElevatorConstants.gearRatio*((Constants.LEVEL3_HEIGHT-ElevatorConstants.robotHeight)/ElevatorConstants.drumCircumferenceIn) ) {
       elevator.setLevel(3);
     }    
     //lightsSubsystem.setSolidColor(19, 173, 14);

@@ -28,11 +28,12 @@ public class Elevator extends SubsystemBase {
   /** Creates a new ExampleSubsystem. */
   public Elevator() {
 
-    heightController = new PIDController(.2, 0, 0);
-    heightController.setTolerance(0.01);
+    heightController = new PIDController(.3, 0, 0);
+    heightController.setTolerance(0.2);
     
     elevator1= new SparkMax(ElevatorConstants.ele1, MotorType.kBrushless);
-    
+    elevator1.clearFaults();
+
     SparkMaxConfig config = new SparkMaxConfig();  
     SoftLimitConfig softLimit = new SoftLimitConfig();
 
@@ -44,6 +45,7 @@ public class Elevator extends SubsystemBase {
     
     config
     .inverted(true)
+    .smartCurrentLimit(105, 40)
     .idleMode(IdleMode.kBrake)
     .apply(softLimit);
 
@@ -62,7 +64,7 @@ public class Elevator extends SubsystemBase {
 
   public void lower() { // raises the roof
 
-    elevator1.set(-.30);
+    elevator1.set(.30);
     
   }    
 
@@ -71,25 +73,22 @@ public class Elevator extends SubsystemBase {
     
   }
  public void setLevel ( int level) {
+  SmartDashboard.putNumber("level", level);
   this.level = level;
  }
   public boolean atLevel0(){
-    SmartDashboard.putNumber("level", level);
     return level == 0;
   }
 
   public boolean atLevel1(){
-    SmartDashboard.putNumber("level", level);
     return level == 1;
   }
 
   public boolean atLevel2(){
-    SmartDashboard.putNumber("level", level);
     return level == 2;
   }
 
   public boolean atLevel3(){
-    SmartDashboard.putNumber("level", level);
     return level == 3;
   }
 

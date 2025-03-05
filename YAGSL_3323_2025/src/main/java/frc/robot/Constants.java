@@ -23,9 +23,9 @@ public final class Constants
   // this value is the height of the robot + elevator.
   
   public static final double LEVEL0_HEIGHT = 0;  // 6
-  public static final double LEVEL1_HEIGHT = 11; // 21
-  public static final double LEVEL2_HEIGHT = 23; // 41.5
-  public static final double LEVEL3_HEIGHT = 32; // 62
+  public static final double LEVEL1_HEIGHT = 32; // 21
+  public static final double LEVEL2_HEIGHT = 48; // 41.5
+  public static final double LEVEL3_HEIGHT = 51.25; // 62
 
   public static final double ROBOT_MASS = (148 - 20.3) * 0.453592; // 32lbs * kg per pound
   public static final Matter CHASSIS    = new Matter(new Translation3d(0, 0, Units.inchesToMeters(8)), ROBOT_MASS);
@@ -64,8 +64,8 @@ public final class Constants
         
     public static final double degreePerRot = 2.05;
     public static final int ele1 = 9;
-    public static final double gearRatio = 100;  // 100 -- motor : bar
-    public static final double drumCircumferenceIn = 9.5; // C of rope reel
+    public static final double gearRatio = 40;  // 100 -- motor : bar
+    public static final double drumCircumferenceIn = 5.81; // C of rope reel
     public static final double robotHeight = 5.875;  // floor to top of robot base in inches
   
   }
@@ -80,7 +80,7 @@ public final class Constants
   public static final class ClimberConstants {
     public static final int harpoonMotorId = 12;
     public static final int lockMotorId = 13;
-    public static final int lockGear= 7;
+    public static final int lockGear= 63;
    
   }
 

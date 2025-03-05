@@ -37,7 +37,7 @@ public class Climber extends SubsystemBase {
   /** Creates a new ExampleSubsystem. */
   public Climber() {
 
-    lockController = new PIDController(0.15, 0, 0);
+    lockController = new PIDController(0.2, 0, 0);
     
     harpoon= new SparkMax(ClimberConstants.harpoonMotorId, MotorType.kBrushless);
     lock= new SparkMax(ClimberConstants.lockMotorId, MotorType.kBrushless);
