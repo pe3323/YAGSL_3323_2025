@@ -48,14 +48,14 @@ public class AlgaeGrabber extends SubsystemBase {
     }
 
     public void grab() { // raises the roof
-        grabber.set(-.15);
+        grabber.set(-.3);
     
     }
 
     // No more algae
     public void release() { // lowers the roof
 
-        grabber.set(.15);
+        grabber.set(.3);
         
 
     }

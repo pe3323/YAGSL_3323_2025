@@ -32,7 +32,7 @@ public class CoralPivot extends SubsystemBase {
     heightController.setTolerance(0.1);
 
         config
-        //.inverted(true)
+        .inverted(true)
         .idleMode(IdleMode.kBrake);
        coralPivot.getEncoder().setPosition(0);
 

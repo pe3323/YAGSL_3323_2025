@@ -50,6 +50,9 @@ public class SetHarpoonAngle extends Command {
   @Override
   public void execute() {
     harpoon.setHarpoonSpeed(harpoonController.calculate(harpoon.getHarpoon()));
+    if ( harpoonController.atSetpoint()){
+      end(false);
+    } 
   }
     
 

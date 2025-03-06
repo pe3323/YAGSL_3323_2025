@@ -29,7 +29,7 @@ public class Coral extends SubsystemBase {
         coral = new SparkMax(CoralConstants.coralMotorId, MotorType.kBrushless); // makes new motor controller that is
         SparkMaxConfig config = new SparkMaxConfig();// defined as the motor for the arm
         coral.clearFaults();
-        heightController = new PIDController(.15, 0, 0);
+        heightController = new PIDController(.05, 0, 0);
     heightController.setTolerance(0.1);
 
         config

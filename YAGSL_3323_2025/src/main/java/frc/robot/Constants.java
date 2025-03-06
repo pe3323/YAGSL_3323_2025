@@ -23,9 +23,10 @@ public final class Constants
   // this value is the height of the robot + elevator.
   
   public static final double LEVEL0_HEIGHT = 0;  // 6
-  public static final double LEVEL1_HEIGHT = 32; // 21
-  public static final double LEVEL2_HEIGHT = 48; // 41.5
-  public static final double LEVEL3_HEIGHT = 51.25; // 62
+  public static final double LEVEL05_HEIGHT= 8;
+  public static final double LEVEL1_HEIGHT = 8; // 21
+  public static final double LEVEL2_HEIGHT = 27; // 41.5
+  public static final double LEVEL3_HEIGHT = 59; // 62
 
   public static final double ROBOT_MASS = (148 - 20.3) * 0.453592; // 32lbs * kg per pound
   public static final Matter CHASSIS    = new Matter(new Translation3d(0, 0, Units.inchesToMeters(8)), ROBOT_MASS);

@@ -18,6 +18,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.ConditionalCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.OperatorConstants;
@@ -203,6 +204,12 @@ public class RobotContainer {
       driverXbox.rightBumper().onTrue(Commands.none());
     } else {
       driverXbox.y().onTrue((Commands.runOnce(drivebase::zeroGyro)));
+      driverXbox.start().onTrue(
+        new SequentialCommandGroup(
+          new SetCoralPivot(coralPivot, 45),
+          new SetCoralAngle(coral, -45)
+        )
+      );
       /* driverXbox.x().onTrue(Commands.runOnce(drivebase::addFakeVisionReading));
       driverXbox.b().whileTrue(
           drivebase.driveToPose(
@@ -221,11 +228,13 @@ public class RobotContainer {
       //operatorXbox.b().onTrue( new  SetElevatorHeight(elevator, Constants.LEVEL2_HEIGHT) );
       //operatorXbox.y().onTrue( new  SetElevatorHeight(elevator, Constants.LEVEL3_HEIGHT) );
 
-      operatorXbox.a().onTrue( new  ConditionalCommand(new SetCoralAngle(coral, 0), new SetElevatorHeight(elevator, Constants.LEVEL0_HEIGHT), () -> elevator.atLevel0()));
-      operatorXbox.x().onTrue( new  ConditionalCommand(new SetCoralAngle(coral, 45), new SetElevatorHeight(elevator, Constants.LEVEL1_HEIGHT), () -> elevator.atLevel1()));
-      operatorXbox.b().onTrue( new  ConditionalCommand(new SetCoralAngle(coral, 45), new SetElevatorHeight(elevator, Constants.LEVEL2_HEIGHT), () -> elevator.atLevel2()));
-      operatorXbox.y().onTrue( new  ConditionalCommand(new SetCoralAngle(coral, 0), new SetElevatorHeight(elevator, Constants.LEVEL3_HEIGHT), () -> elevator.atLevel3()));
-
+      operatorXbox.a().onTrue( new  ConditionalCommand(new SetCoralAngle(coral, -35), new SetElevatorHeight(elevator, Constants.LEVEL0_HEIGHT), () -> elevator.atLevel0()));
+      operatorXbox.x().onTrue( new  ConditionalCommand(new SetCoralAngle(coral, 90), new SetElevatorHeight(elevator, Constants.LEVEL1_HEIGHT), () -> elevator.atLevel1()));
+      operatorXbox.b().onTrue( new  ConditionalCommand(new SetCoralAngle(coral, 90), new SetElevatorHeight(elevator, Constants.LEVEL2_HEIGHT), () -> elevator.atLevel2()));
+      operatorXbox.y().onTrue( new  ConditionalCommand(new SetCoralAngle(coral, -35), new SetElevatorHeight(elevator, Constants.LEVEL3_HEIGHT), () -> elevator.atLevel3()));
+      operatorXbox.start().onTrue(
+        new SetElevatorHeight(elevator, Constants.LEVEL05_HEIGHT)
+      );
 
       /*
       operatorXbox.a().onTrue( new Command() {

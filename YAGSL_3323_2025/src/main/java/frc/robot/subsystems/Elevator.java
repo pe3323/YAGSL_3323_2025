@@ -29,7 +29,7 @@ public class Elevator extends SubsystemBase {
   public Elevator() {
 
     heightController = new PIDController(.3, 0, 0);
-    heightController.setTolerance(0.2);
+    heightController.setTolerance(0.1);
     
     elevator1= new SparkMax(ElevatorConstants.ele1, MotorType.kBrushless);
     elevator1.clearFaults();
@@ -39,7 +39,7 @@ public class Elevator extends SubsystemBase {
 
     softLimit
     .forwardSoftLimitEnabled(true)
-    .forwardSoftLimit(400)
+    .forwardSoftLimit(500)
     .reverseSoftLimitEnabled(true)
     .reverseSoftLimit(0);
     
@@ -97,7 +97,7 @@ public class Elevator extends SubsystemBase {
   }
 
   public void setPosition(double position) { // raises the roof
-    double targetPosition = ElevatorConstants.gearRatio*(position/ElevatorConstants.drumCircumferenceIn)+ElevatorConstants.robotHeight;
+    double targetPosition = ElevatorConstants.gearRatio*(position/ElevatorConstants.drumCircumferenceIn);
     elevator1.getClosedLoopController().setReference(targetPosition, ControlType.kPosition);
   }    
 

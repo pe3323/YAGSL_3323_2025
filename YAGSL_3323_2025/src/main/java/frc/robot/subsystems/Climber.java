@@ -48,7 +48,7 @@ public class Climber extends SubsystemBase {
 
     softLimit
     .forwardSoftLimitEnabled(true)
-    .forwardSoftLimit(150)
+    .forwardSoftLimit(750)
     .reverseSoftLimitEnabled(true)
     .reverseSoftLimit(0);
 
