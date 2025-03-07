@@ -228,7 +228,7 @@ public class RobotContainer {
       //operatorXbox.b().onTrue( new  SetElevatorHeight(elevator, Constants.LEVEL2_HEIGHT) );
       //operatorXbox.y().onTrue( new  SetElevatorHeight(elevator, Constants.LEVEL3_HEIGHT) );
 
-      operatorXbox.a().onTrue( new  ConditionalCommand(new SetCoralAngle(coral, -35), new SetElevatorHeight(elevator, Constants.LEVEL0_HEIGHT), () -> elevator.atLevel0()));
+      operatorXbox.a().onTrue( new  ConditionalCommand(new SetCoralAngle(coral, 0), new SetElevatorHeight(elevator, Constants.LEVEL0_HEIGHT), () -> elevator.atLevel0()));
       operatorXbox.x().onTrue( new  ConditionalCommand(new SetCoralAngle(coral, 90), new SetElevatorHeight(elevator, Constants.LEVEL1_HEIGHT), () -> elevator.atLevel1()));
       operatorXbox.b().onTrue( new  ConditionalCommand(new SetCoralAngle(coral, 90), new SetElevatorHeight(elevator, Constants.LEVEL2_HEIGHT), () -> elevator.atLevel2()));
       operatorXbox.y().onTrue( new  ConditionalCommand(new SetCoralAngle(coral, -35), new SetElevatorHeight(elevator, Constants.LEVEL3_HEIGHT), () -> elevator.atLevel3()));
@@ -451,7 +451,7 @@ public class RobotContainer {
 
         // These commands handle the foot/hook/anchor thing
         driverXbox.a().onTrue(
-        new SetLockAngle(climber, -22, lightsSubsystem)
+        new SetLockAngle(climber, -18, lightsSubsystem)
         );
        
         driverXbox.b().onTrue(

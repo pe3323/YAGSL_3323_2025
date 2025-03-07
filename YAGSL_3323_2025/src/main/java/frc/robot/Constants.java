@@ -24,9 +24,9 @@ public final class Constants
   
   public static final double LEVEL0_HEIGHT = 0;  // 6
   public static final double LEVEL05_HEIGHT= 8;
-  public static final double LEVEL1_HEIGHT = 8; // 21
-  public static final double LEVEL2_HEIGHT = 27; // 41.5
-  public static final double LEVEL3_HEIGHT = 59; // 62
+  public static final double LEVEL1_HEIGHT = 13; // 21
+  public static final double LEVEL2_HEIGHT = 32; // 41.5
+  public static final double LEVEL3_HEIGHT = 59.5; // 62
 
   public static final double ROBOT_MASS = (148 - 20.3) * 0.453592; // 32lbs * kg per pound
   public static final Matter CHASSIS    = new Matter(new Translation3d(0, 0, Units.inchesToMeters(8)), ROBOT_MASS);
@@ -65,7 +65,7 @@ public final class Constants
         
     public static final double degreePerRot = 2.05;
     public static final int ele1 = 9;
-    public static final double gearRatio = 40;  // 100 -- motor : bar
+    public static final double gearRatio = 36;  // 100 -- motor : bar
     public static final double drumCircumferenceIn = 5.81; // C of rope reel
     public static final double robotHeight = 5.875;  // floor to top of robot base in inches
   
@@ -74,7 +74,7 @@ public final class Constants
   public static final class CoralConstants {
     public static final int coralMotorId = 11;
     public static final int coralPivotMotorId = 10;
-    public static final int coralGear = 10;
+    public static final int coralGear = 50   ;
     public static final int coralPivotGear = 20;
   }
 
