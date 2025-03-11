@@ -5,12 +5,6 @@
     "data": {
       "commands": [
         {
-          "type": "named",
-          "data": {
-            "name": "CoralPivot"
-          }
-        },
-        {
           "type": "path",
           "data": {
             "pathName": "C_to_2"

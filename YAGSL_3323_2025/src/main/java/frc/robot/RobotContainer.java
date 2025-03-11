@@ -69,6 +69,7 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...  
   private final SwerveSubsystem drivebase = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(),
       "swerve"));
+      
 
   /**
    * Converts driver input into a field-relative ChassisSpeeds that is controlled
@@ -77,7 +78,7 @@ public class RobotContainer {
   SwerveInputStream driveAngularVelocity = SwerveInputStream.of(drivebase.getSwerveDrive(),
       () -> driverXbox.getLeftY() * 1,
       () -> driverXbox.getLeftX() * 1)
-      .withControllerRotationAxis(() -> driverXbox.getRightX() * -1)
+      .withControllerRotationAxis(() -> driverXbox.getRightX() /2.0 * -1.0)
       .deadband(OperatorConstants.DEADBAND)
       .scaleTranslation(0.8)
       .allianceRelativeControl(true);
@@ -450,8 +451,9 @@ public class RobotContainer {
 
 
         // These commands handle the foot/hook/anchor thing
+        // was -18  (49:1), then multiple 1.9 
         driverXbox.a().onTrue(
-        new SetLockAngle(climber, -18, lightsSubsystem)
+        new SetLockAngle(climber, -27, lightsSubsystem)
         );
        
         driverXbox.b().onTrue(
