@@ -44,6 +44,7 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
 import java.util.function.Supplier;
 import org.json.simple.parser.ParseException;
@@ -68,11 +69,11 @@ public class SwerveSubsystem extends SubsystemBase
   /**
    * AprilTag field layout.
    */
-  private final AprilTagFieldLayout aprilTagFieldLayout = AprilTagFieldLayout.loadField(AprilTagFields.k2024Crescendo);
+  private final AprilTagFieldLayout aprilTagFieldLayout = AprilTagFieldLayout.loadField(AprilTagFields.k2025ReefscapeAndyMark);
   /**
    * Enable vision odometry updates while driving.
    */
-  private final boolean             visionDriveTest     = false;
+  private final boolean             visionDriveTest     = true;
   /**
    * PhotonVision class to keep an accurate odometry.
    */
@@ -236,6 +237,10 @@ public class SwerveSubsystem extends SubsystemBase
     PathfindingCommand.warmupCommand().schedule();
   }
 
+  public Vision getVision(){
+    return vision;
+  }
+
   /**
    * Aim the robot at the target returned by PhotonVision.
    *
@@ -257,7 +262,22 @@ public class SwerveSubsystem extends SubsystemBase
                                                              .getYaw()))); // Not sure if this will work, more math may be required.
         }
       }
-    });
+    }).until( new BooleanSupplier () {
+        @Override
+        public boolean getAsBoolean() {
+        Optional<PhotonPipelineResult> resultO = camera.getBestResult();
+        if (resultO.isPresent())
+        {
+          var result = resultO.get();
+          if (result.hasTargets())
+          {
+            return result.getBestTarget().getPoseAmbiguity() <= 0.01;
+          }
+          return true;
+      }
+      return true;
+    }}
+    );
   }
 
   /**

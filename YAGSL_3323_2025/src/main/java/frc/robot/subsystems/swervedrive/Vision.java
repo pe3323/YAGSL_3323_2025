@@ -53,7 +53,7 @@ public class Vision
    * April Tag Field Layout of the year.
    */
   public static final AprilTagFieldLayout fieldLayout                     = AprilTagFieldLayout.loadField(
-      AprilTagFields.k2024Crescendo);
+      AprilTagFields.k2025ReefscapeAndyMark);
   /**
    * Ambiguity defined as a value between (0,1). Used in {@link Vision#filterPose}.
    */
@@ -330,29 +330,45 @@ public class Vision
     field2d.getObject("tracked targets").setPoses(poses);
   }
 
+
+  public Cameras getCamera(String name){
+    //System.out.println( "Looking for " + name );
+    Cameras result = Cameras.CENTER_CAM;
+    //for (Cameras c: Cameras.values()){
+    //  System.out.println( "Testing " + c.name()); 
+    //  if ( c.name().equalsIgnoreCase(name)){
+    //    System.out.println( "Found camera " +name );
+    //    result = c;
+    //  }
+    //}
+    return result;
+  }
+
   /**
    * Camera Enum to select each camera
    */
-  enum Cameras
+  public enum Cameras
   {
     /**
      * Left Camera
-     */
+    
     LEFT_CAM("left",
              new Rotation3d(0, Math.toRadians(-24.094), Math.toRadians(30)),
              new Translation3d(Units.inchesToMeters(12.056),
                                Units.inchesToMeters(10.981),
                                Units.inchesToMeters(8.44)),
              VecBuilder.fill(4, 4, 8), VecBuilder.fill(0.5, 0.5, 1)),
+              */
     /**
      * Right Camera
-     */
+     
     RIGHT_CAM("right",
               new Rotation3d(0, Math.toRadians(-24.094), Math.toRadians(-30)),
               new Translation3d(Units.inchesToMeters(12.056),
                                 Units.inchesToMeters(-10.981),
                                 Units.inchesToMeters(8.44)),
               VecBuilder.fill(4, 4, 8), VecBuilder.fill(0.5, 0.5, 1)),
+              */
     /**
      * Center Camera
      */
@@ -481,6 +497,11 @@ public class Vision
       }
 
       PhotonPipelineResult bestResult       = resultsList.get(0);
+      // we have a result, but no target!
+      //if ( bestResult.getBestTarget() == null ){
+        //return Optional.empty();
+      //}
+
       double               amiguity         = bestResult.getBestTarget().getPoseAmbiguity();
       double               currentAmbiguity = 0;
       for (PhotonPipelineResult result : resultsList)
@@ -532,7 +553,7 @@ public class Vision
       if ((resultsList.isEmpty() || (currentTimestamp - mostRecentTimestamp >= debounceTime)) &&
           (currentTimestamp - lastReadTimestamp) >= debounceTime)
       {
-        resultsList = Robot.isReal() ? camera.getAllUnreadResults() : cameraSim.getCamera().getAllUnreadResults();
+        resultsList = camera.getAllUnreadResults() ;
         lastReadTimestamp = currentTimestamp;
         resultsList.sort((PhotonPipelineResult a, PhotonPipelineResult b) -> {
           return a.getTimestampSeconds() >= b.getTimestampSeconds() ? 1 : -1;

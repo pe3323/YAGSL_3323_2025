@@ -7,6 +7,7 @@ package frc.robot;
 import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.PathPlannerAuto;
 
+import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -24,11 +25,13 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.AlgaeExtend;
 import frc.robot.commands.AlgaeRetract;
+import frc.robot.commands.FindApril;
 import frc.robot.commands.SetCoralAngle;
 import frc.robot.commands.SetCoralPivot;
 import frc.robot.commands.SetElevatorHeight;
 import frc.robot.commands.SetHarpoonAngle;
 import frc.robot.commands.SetLockAngle;
+import frc.robot.commands.runnables.AprilTagAssist;
 import frc.robot.subsystems.Algae;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Elevator;
@@ -37,6 +40,9 @@ import frc.robot.subsystems.AlgaeGrabber;
 import frc.robot.subsystems.swervedrive.Coral;
 import frc.robot.subsystems.swervedrive.CoralPivot;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
+import frc.robot.subsystems.swervedrive.Vision;
+
+
 import java.io.File;
 import swervelib.SwerveInputStream;
 
@@ -57,6 +63,7 @@ public class RobotContainer {
   private final Algae algae = new Algae();
   private final CoralPivot coralPivot = new CoralPivot();
   private final AlgaeGrabber algaeGrabber = new AlgaeGrabber();
+  
   private boolean level0 = true;
   private boolean level1 = false;
   private boolean level2 = false;
@@ -121,6 +128,8 @@ public class RobotContainer {
    */
   public RobotContainer() {
     // Configure the trigger bindings
+
+    
 
     NamedCommands.registerCommand("Level0", new SetElevatorHeight(elevator, 0));  
     NamedCommands.registerCommand("Level1", new SetElevatorHeight(elevator, Constants.LEVEL1_HEIGHT)); 
@@ -413,6 +422,15 @@ public class RobotContainer {
 
 
         // Extend the harpoon and then pull us in.
+
+        driverXbox.x().onTrue(
+          //Commands.runOnce(new AprilTagAssist(drivebase), drivebase)
+            //drivebase.aimAtTarget(drivebase.getVision().getCamera("center"))
+            new FindApril(drivebase)
+        );
+
+
+
         driverXbox.leftBumper().whileTrue(new Command() {
           @Override
           public void execute() {
