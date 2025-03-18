@@ -23,6 +23,7 @@ import frc.robot.Constants;
 public class Elevator extends SubsystemBase {
 
   private final SparkMax elevator1;
+  private final SparkMax elevator2;
   private int level = 0;
   private PIDController heightController;
   /** Creates a new ExampleSubsystem. */
@@ -31,11 +32,15 @@ public class Elevator extends SubsystemBase {
     heightController = new PIDController(.3, 0, 0);
     heightController.setTolerance(0.1);
     
+    elevator2= new SparkMax(ElevatorConstants.ele2, MotorType.kBrushless);
+    elevator2.clearFaults();
     elevator1= new SparkMax(ElevatorConstants.ele1, MotorType.kBrushless);
     elevator1.clearFaults();
 
     SparkMaxConfig config = new SparkMaxConfig();  
     SoftLimitConfig softLimit = new SoftLimitConfig();
+    SparkMaxConfig leftconfig = new SparkMaxConfig();  
+    SparkMaxConfig rightconfig = new SparkMaxConfig();  
 
     softLimit
     .forwardSoftLimitEnabled(true)
@@ -44,13 +49,23 @@ public class Elevator extends SubsystemBase {
     .reverseSoftLimit(0);
     
     config
-    .inverted(true)
     .smartCurrentLimit(105, 40)
     .idleMode(IdleMode.kBrake)
     .apply(softLimit);
 
+    leftconfig
+    .inverted(false)
+    .follow(ElevatorConstants.ele1);
+
+    rightconfig
+    .inverted(true);
+    
+
+
     elevator1.getEncoder().setPosition(0);
-    elevator1.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+    elevator1.configure(rightconfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+    elevator2.getEncoder().setPosition(0);
+    elevator2.configure(leftconfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
   
 
   }

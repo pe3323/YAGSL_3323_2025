@@ -6,6 +6,7 @@ import org.photonvision.PhotonCamera;
 import org.photonvision.targeting.PhotonPipelineResult;
 import org.photonvision.targeting.PhotonTrackedTarget;
 
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.Timer;
@@ -20,10 +21,13 @@ public class FindApril extends Command{
   private final SwerveSubsystem swerve;
   private boolean isRunning = false;
   private Timer timer = new Timer();  
-  private double targetYaw = 0.0;
+  private double targetHeading = 0.0;
   private Cameras camera;
   private double robotYaw = 0.0;
   private double robotTargetYaw=0.0;
+  private Pose2d currentPose;
+  private Pose2d referencePose;
+  private double theta= 0.0;
  // private PhotonCamera c;
 
   public FindApril( SwerveSubsystem swerve) { // PhotonCamera c1 ) {
@@ -36,59 +40,27 @@ public class FindApril extends Command{
 
     @Override
   public void initialize() {
-    SmartDashboard.putBoolean("result0ispresent", false);
-    SmartDashboard.putNumber("Robot Init Yaw", swerve.getHeading().getDegrees());
-    robotYaw = swerve.getHeading().getDegrees();
-    this.camera = swerve.getVision().getCamera("center");
-      Optional<PhotonPipelineResult> resultO = camera.getLatestResult();
-    if (resultO.isPresent())
-      {
-        SmartDashboard.putBoolean("result0ispresent", true);
-        var result = resultO.get();
+    referencePose=swerve.getApril(7).toPose2d();
+    targetHeading= referencePose.getRotation().getRadians();
 
-        if (result.hasTargets())
-        {
-          targetYaw = result.getBestTarget()
-          .getYaw();
-          SmartDashboard.putNumber("Target Yaw", targetYaw);
-
-          robotTargetYaw = robotYaw-targetYaw;
-          
-        }
-      }
-
+    currentPose= swerve.getPose();
+    theta= Math.acos(((referencePose.getX()*currentPose.getX())+(referencePose.getY()*currentPose.getY()))
+    /(Math.sqrt(Math.pow(referencePose.getX(), 2)+Math.pow(referencePose.getY(), 2))*(Math.sqrt(Math.pow(currentPose.getX(), 2)+Math.pow(currentPose.getY(), 2))
+    
+    )));
   }
 
   @Override
   public void execute() {
-      //timer.start();
+    robotYaw = swerve.getHeading().getRadians();
 
-
-      //Optional<PhotonPipelineResult> resultO = camera.getBestResult();
-     // if (resultO.isPresent())
-     // {
-      //  var result = resultO.get();
-      //  if (result.hasTargets())
-      //  {
-      //    swerve.drive(swerve.getTargetSpeeds(0,
-      //                          0,
-      //                          Rotation2d.fromDegrees(targetYaw+20))); // Not sure if this will work, more math may be required.
-
-      
-      //PhotonPipelineResult pipe = c.getAllUnreadResults().get(0);
-      //if ( pipe == null )
-      //{
-      //  System.out.println( "NOPE");
-      //  return;
-      //}
-      //targetYaw = -pipe.getTargets().get(0).getYaw();
-
-      
+      if ((robotYaw-targetHeading)<0){
         swerve.drive(new Translation2d(0,0), 
-                                Rotation2d.fromDegrees(targetYaw).getRadians(), true);                                
-      //  }
-      //}
-      isRunning = true;
+                                1, true); }
+      else {
+        swerve.drive(new Translation2d(0,0), 
+                                -1, true);
+      }                               
   }
 
   // Called once the command ends or is interrupted.
@@ -104,12 +76,12 @@ public class FindApril extends Command{
     
 
    
-        robotYaw = swerve.getHeading().getDegrees();
+        robotYaw = swerve.getHeading().getRadians();
         SmartDashboard.putString("April Tag Finder Finished", "Target found");
     
         SmartDashboard.putNumber("Robot Yaw", robotYaw);
         SmartDashboard.putNumber("robotTargetYaw", robotTargetYaw);
-        return Math.abs(robotYaw-targetYaw) <= 1;
+        return Math.abs(robotYaw-targetHeading) <= .1;
       
     
 

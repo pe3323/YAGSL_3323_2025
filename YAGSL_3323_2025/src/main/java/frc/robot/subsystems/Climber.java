@@ -13,6 +13,7 @@ import com.revrobotics.spark.config.ClosedLoopConfig.FeedbackSensor;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkMaxConfig;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
+import com.ctre.phoenix6.hardware.TalonFX;
 import com.revrobotics.spark.SparkClosedLoopController;
 
 import edu.wpi.first.math.controller.PIDController;
@@ -29,7 +30,7 @@ public class Climber extends SubsystemBase {
   public static final int RETRACTED = 0;
   private int state = RETRACTED;
 
-  private final SparkMax harpoon;
+  private final TalonFX harpoon;
   private final SparkMax lock;
  
   private PIDController lockController;
@@ -39,7 +40,7 @@ public class Climber extends SubsystemBase {
 
     lockController = new PIDController(0.05, 0, 0);
     
-    harpoon= new SparkMax(ClimberConstants.harpoonMotorId, MotorType.kBrushless);
+    harpoon= new TalonFX(ClimberConstants.harpoonMotorId);
     lock= new SparkMax(ClimberConstants.lockMotorId, MotorType.kBrushless);
     
     SparkMaxConfig harpoonConfig = new SparkMaxConfig();
@@ -64,11 +65,12 @@ public class Climber extends SubsystemBase {
     
 
     
-    harpoon.getEncoder().setPosition(0);
+    
     lock.getEncoder().setPosition(0);
     
 
-    harpoon.configure(harpoonConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+   
+
   
     lock.configure(lockConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
@@ -101,7 +103,7 @@ public class Climber extends SubsystemBase {
 
   public void setHarpoonPosition(double position) { // raises the roof
 
-    harpoon.getEncoder().setPosition(position);
+   
   }    
 
   public void setHarpoonSpeed(double i) {
@@ -115,7 +117,7 @@ public void stopHarpoon() { // stops the roof
 }
 
 public double getHarpoon() {
-  return harpoon.getEncoder().getPosition();
+ return harpoon.getPosition().getValueAsDouble();
 }
 
 public PIDController getHarpoonController() {
