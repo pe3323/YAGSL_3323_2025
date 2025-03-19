@@ -1,19 +1,15 @@
 package frc.robot.commands;
 
-import java.util.Optional;
+import com.revrobotics.spark.SparkClosedLoopController;
 
-import org.photonvision.PhotonCamera;
-import org.photonvision.targeting.PhotonPipelineResult;
-import org.photonvision.targeting.PhotonTrackedTarget;
-
+import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
-import frc.robot.subsystems.swervedrive.Vision;
 import frc.robot.subsystems.swervedrive.Vision.Cameras;
 
 public class FindApril extends Command{
@@ -28,6 +24,11 @@ public class FindApril extends Command{
   private Pose2d currentPose;
   private Pose2d referencePose;
   private double theta= 0.0;
+
+ 
+
+  private PIDController angleController = new PIDController(  1.7,0,0);
+
  // private PhotonCamera c;
 
   public FindApril( SwerveSubsystem swerve) { // PhotonCamera c1 ) {
@@ -42,25 +43,29 @@ public class FindApril extends Command{
   public void initialize() {
     referencePose=swerve.getApril(7).toPose2d();
     targetHeading= referencePose.getRotation().getRadians();
-
+    angleController.enableContinuousInput(-2*Math.PI, 2*Math.PI);
     currentPose= swerve.getPose();
     theta= Math.acos(((referencePose.getX()*currentPose.getX())+(referencePose.getY()*currentPose.getY()))
     /(Math.sqrt(Math.pow(referencePose.getX(), 2)+Math.pow(referencePose.getY(), 2))*(Math.sqrt(Math.pow(currentPose.getX(), 2)+Math.pow(currentPose.getY(), 2))
-    
     )));
+    angleController.setSetpoint(targetHeading);
   }
 
   @Override
   public void execute() {
+    
     robotYaw = swerve.getHeading().getRadians();
-
-      if ((robotYaw-targetHeading)<0){
+    double rotationSpeed = MathUtil.clamp(angleController.calculate(robotYaw), -2*Math.PI, 2*Math.PI);
+    SmartDashboard.putNumber("rotSpeed", rotationSpeed);
+    swerve.drive(new Translation2d(0,0), 
+                                rotationSpeed, true);
+      /* if ((robotYaw-targetHeading)<0){
         swerve.drive(new Translation2d(0,0), 
-                                1, true); }
+        rotationSpeed, true); }
       else {
         swerve.drive(new Translation2d(0,0), 
-                                -1, true);
-      }                               
+                                -rotationSpeed, true);
+      }         */                       
   }
 
   // Called once the command ends or is interrupted.
@@ -74,14 +79,14 @@ public class FindApril extends Command{
   @Override
   public boolean isFinished() {
     
-
-   
         robotYaw = swerve.getHeading().getRadians();
         SmartDashboard.putString("April Tag Finder Finished", "Target found");
     
         SmartDashboard.putNumber("Robot Yaw", robotYaw);
         SmartDashboard.putNumber("robotTargetYaw", robotTargetYaw);
         return Math.abs(robotYaw-targetHeading) <= .1;
+
+    
       
     
 

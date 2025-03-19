@@ -18,7 +18,9 @@ import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.networktables.NetworkTablesJNI;
+import edu.wpi.first.networktables.StructPublisher;
 import edu.wpi.first.wpilibj.Alert;
 import edu.wpi.first.wpilibj.Alert.AlertType;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
@@ -76,6 +78,7 @@ public class Vision
    */
   private             Field2d             field2d;
 
+  private StructPublisher publisher = NetworkTableInstance.getDefault().getStructTopic("Vision Pose", Pose2d.struct).publish();
 
   /**
    * Constructor for the Vision class.
@@ -123,11 +126,15 @@ public class Vision
       Optional<EstimatedRobotPose> poseEst = getEstimatedGlobalPose(camera);
       if (poseEst.isPresent())
       {
+        publisher.set(poseEst.get().estimatedPose.toPose2d());
+
         var pose = poseEst.get();
         swerveDrive.addVisionMeasurement(pose.estimatedPose.toPose2d(),
         pose.timestampSeconds,
         camera.curStdDevs);
-        SmartDashboard.putString("pose", pose.toString());
+        SmartDashboard.putNumber("poseX", pose.estimatedPose.toPose2d().getX());
+        SmartDashboard.putNumber("poseY", pose.estimatedPose.toPose2d().getY());
+        SmartDashboard.putNumber("poseZ", pose.estimatedPose.toPose2d().getRotation().getRadians());
       }
     }
 
@@ -245,24 +252,24 @@ public class Vision
                                Units.inchesToMeters(8.44)),
              VecBuilder.fill(4, 4, 8), VecBuilder.fill(0.5, 0.5, 1)),
               */
-    /**
-     * Right Camera
+    
      
-    RIGHT_CAM("right",
-              new Rotation3d(0, Math.toRadians(-24.094), Math.toRadians(-30)),
-              new Translation3d(Units.inchesToMeters(12.056),
-                                Units.inchesToMeters(-10.981),
-                                Units.inchesToMeters(8.44)),
+     
+    /* REAR_CAM("rear",
+              new Rotation3d(0, Math.toRadians(-24.094),0.0),
+              new Translation3d(Units.inchesToMeters(-13.0),
+                                Units.inchesToMeters(13.0),
+                                Units.inchesToMeters(0.0)),
               VecBuilder.fill(4, 4, 8), VecBuilder.fill(0.5, 0.5, 1)),
-              */
+               */
     /**
      * Center Camera
      */
     CENTER_CAM("center",
                new Rotation3d(0, Units.degreesToRadians(18), 0),
-               new Translation3d(Units.inchesToMeters(-4.628),
-                                 Units.inchesToMeters(-10.687),
-                                 Units.inchesToMeters(16.129)),
+               new Translation3d(Units.inchesToMeters(0),
+                                 Units.inchesToMeters(10),
+                                 Units.inchesToMeters(0)),
                VecBuilder.fill(4, 4, 8), VecBuilder.fill(0.5, 0.5, 1));
 
     /**

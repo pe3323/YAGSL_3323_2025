@@ -68,7 +68,7 @@ public final class Constants
     public static final double degreePerRot = 2.05;
     public static final int ele1 = 9;
     public static final int ele2 = 16;
-    public static final double gearRatio = 36;  // 100 -- motor : bar
+    public static final double gearRatio = 50;  // 100 -- motor : bar
     public static final double drumCircumferenceIn = 5.81; // C of rope reel
     public static final double robotHeight = 5.875;  // floor to top of robot base in inches
   
@@ -84,7 +84,7 @@ public final class Constants
   public static final class ClimberConstants {
     public static final int harpoonMotorId = 12;
     public static final int lockMotorId = 13;
-    public static final int lockGear= 63;
+    public static final int lockGear= 5;
    
   }
 

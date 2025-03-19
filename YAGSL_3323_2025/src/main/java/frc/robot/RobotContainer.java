@@ -472,7 +472,7 @@ public class RobotContainer {
         // These commands handle the foot/hook/anchor thing
         // was -18  (49:1), then multiple 1.9 
         driverXbox.a().onTrue(
-        new SetLockAngle(climber, -27, lightsSubsystem)
+        new SetLockAngle(climber, -1, lightsSubsystem)
         );
        
         driverXbox.b().onTrue(
