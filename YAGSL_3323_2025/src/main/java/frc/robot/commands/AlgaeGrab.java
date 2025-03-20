@@ -7,6 +7,7 @@ package frc.robot.commands;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants.ElevatorConstants;
+import frc.robot.subsystems.Algae;
 import frc.robot.subsystems.AlgaeGrabber;
 import frc.robot.subsystems.Elevator;
 
@@ -15,7 +16,7 @@ import frc.robot.subsystems.Elevator;
 public class AlgaeGrab extends Command {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   
-  private AlgaeGrabber grabber;
+  private Algae algae;
   private PIDController elevatorController;
   private double endPosition;
 
@@ -24,11 +25,11 @@ public class AlgaeGrab extends Command {
    *
    * @param subsystem The subsystem used by this command.
    */
-  public AlgaeGrab(AlgaeGrabber grabber, double position) {
-    this.grabber = grabber;
-    elevatorController = grabber.getController();
+  public AlgaeGrab(Algae algae, double position) {
+    this.algae = algae;
+    elevatorController = algae.getController();
     endPosition = position;
-    addRequirements(grabber);
+    addRequirements(algae);
   }
 
   // Called when the command is initially scheduled.
@@ -41,15 +42,15 @@ public class AlgaeGrab extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    grabber.setSpeed(elevatorController.calculate(grabber.getposition()));
+    algae.setGrabberSpeed(elevatorController.calculate(algae.getposition()));
   }
     
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    grabber.stop();
-    grabber.setPosition(endPosition);
+    algae.stopGrabber();
+    algae.setPosition(endPosition);
 
   }
 

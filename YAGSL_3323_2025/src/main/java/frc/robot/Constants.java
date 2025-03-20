@@ -89,11 +89,17 @@ public final class Constants
   }
 
   public static final class AlgaeConstants {
-    public static final int extenderMotorId = 14;
+    public static final int armMotorId = 14;
     public static final int grabberMotorId = 15;
-    public static final int grabberGear = 1;
+    public static final int pivotMotorID = 10;
 
-    public static final double maxAlgaePosition = 163;
+    public static final int armGear = 50;      // big arm
+    public static final int grabberGear = 7;   // fingers
+    public static final int pivotGear = 50;    // wrist
+
+    // this is the wrist of the algae subsystem
+    // these are the # of rotations of the motor
+    public static final double maxAlgaePosition = 25;
     public static final double miniumumAlgaePostition = 0;
   }
 }

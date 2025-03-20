@@ -42,7 +42,7 @@ public class FindApril extends Command{
     @Override
   public void initialize() {
     referencePose=swerve.getApril(7).toPose2d();
-    targetHeading= referencePose.getRotation().getRadians();
+    targetHeading= referencePose.getRotation().getRadians() + Math.PI;
     angleController.enableContinuousInput(-2*Math.PI, 2*Math.PI);
     currentPose= swerve.getPose();
     theta= Math.acos(((referencePose.getX()*currentPose.getX())+(referencePose.getY()*currentPose.getY()))

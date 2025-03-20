@@ -15,6 +15,13 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.CoralConstants;
 
+
+/**
+ * Do not use this class in 2025 anymore.
+ * the motor id was repurposed to become the Algae subsystem
+ * wrist/pivot.
+ */
+@Deprecated
 public class CoralPivot extends SubsystemBase {
     
 

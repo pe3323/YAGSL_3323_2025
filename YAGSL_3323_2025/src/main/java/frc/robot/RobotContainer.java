@@ -44,6 +44,8 @@ import frc.robot.subsystems.swervedrive.Vision;
 
 
 import java.io.File;
+
+import swervelib.SwerveDrive;
 import swervelib.SwerveInputStream;
 
 
@@ -60,9 +62,8 @@ public class RobotContainer {
   private final Elevator elevator = new Elevator();
   private final Coral coral = new Coral();
   private final Climber climber = new Climber();
-  private final Algae algae = new Algae();
-  private final CoralPivot coralPivot = new CoralPivot();
-  private final AlgaeGrabber algaeGrabber = new AlgaeGrabber();
+  
+  //private final AlgaeGrabber algaeGrabber = new AlgaeGrabber();
   
   private boolean level0 = true;
   private boolean level1 = false;
@@ -76,7 +77,7 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...  
   private final SwerveSubsystem drivebase = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(),
       "swerve"));
-      
+  private final Algae algae = new Algae(operatorXbox);
 
   /**
    * Converts driver input into a field-relative ChassisSpeeds that is controlled
@@ -139,7 +140,6 @@ public class RobotContainer {
     NamedCommands.registerCommand("coralDefault", new SetCoralAngle(coral, 0));
     NamedCommands.registerCommand("algaeExtend", new AlgaeExtend(algae, 2, lightsSubsystem));
     NamedCommands.registerCommand("algaeRetract", new AlgaeRetract(algae, 2, lightsSubsystem)); 
-    NamedCommands.registerCommand("CoralPivot", new SetCoralPivot(coralPivot, 45));
     
 
     lightsSubsystem.setSolidColor(128,128, 0);
@@ -215,30 +215,7 @@ public class RobotContainer {
       driverXbox.rightBumper().onTrue(Commands.none());
     } else {
       driverXbox.y().onTrue((Commands.runOnce(drivebase::zeroGyro)));
-      driverXbox.start().onTrue(
-        new SequentialCommandGroup(
-          new SetCoralPivot(coralPivot, 45),
-          new SetCoralAngle(coral, -45)
-        )
-      );
-      /* driverXbox.x().onTrue(Commands.runOnce(drivebase::addFakeVisionReading));
-      driverXbox.b().whileTrue(
-          drivebase.driveToPose(
-              new Pose2d(new Translation2d(4, 4), Rotation2d.fromDegrees(0))));
-      driverXbox.start().whileTrue(Commands.none());
-      driverXbox.back().whileTrue(Commands.none()); */
-      
-
-
-     
-
-
-
-      //operatorXbox.a().onTrue( new  SetElevatorHeight(elevator, Constants.LEVEL0_HEIGHT) );
-      //operatorXbox.x().onTrue( new  SetElevatorHeight(elevator, Constants.LEVEL1_HEIGHT) );
-      //operatorXbox.b().onTrue( new  SetElevatorHeight(elevator, Constants.LEVEL2_HEIGHT) );
-      //operatorXbox.y().onTrue( new  SetElevatorHeight(elevator, Constants.LEVEL3_HEIGHT) );
-
+      driverXbox.start().onTrue((drivebase.driveToPose(new Pose2d(14.268, 4.275 , Rotation2d.fromDegrees(174.279)))));
       operatorXbox.a().onTrue( new  ConditionalCommand(new SetCoralAngle(coral, 0), new SetElevatorHeight(elevator, Constants.LEVEL0_HEIGHT), () -> elevator.atLevel0()));
       operatorXbox.x().onTrue( new  ConditionalCommand(new SetCoralAngle(coral, 90), new SetElevatorHeight(elevator, Constants.LEVEL1_HEIGHT), () -> elevator.atLevel1()));
       operatorXbox.b().onTrue( new  ConditionalCommand(new SetCoralAngle(coral, 90), new SetElevatorHeight(elevator, Constants.LEVEL2_HEIGHT), () -> elevator.atLevel2()));
@@ -247,150 +224,16 @@ public class RobotContainer {
         new SetElevatorHeight(elevator, Constants.LEVEL05_HEIGHT)
       );
 
-      /*
-      operatorXbox.a().onTrue( new Command() {
 
-        Command toRun;
-        @Override
-        public void initialize() {
-          if (!level0){
-            toRun = new SetElevatorHeight(elevator, 0);
-            level0 = true;
-            level1 = false;
-            level2 = false;
-            level3 = false;
-            SmartDashboard.putBoolean(getName(), level0);
-            SmartDashboard.putBoolean(getName(), level1);
-            SmartDashboard.putBoolean(getName(), level2);
-            SmartDashboard.putBoolean(getName(), level3);
-          } else {
-             toRun = new SetCoralAngle(coral, 0);
-             
-          }
-        }
-
-        @Override
-        public void execute() {
-          toRun.execute();
-        }
-
-        @Override
-        public boolean isFinished(){
-          return toRun.isFinished();
-        }
-      });
-
-
-      operatorXbox.x().onTrue( new Command() {
-
-
-        Command toRun;
-        @Override
-        public void initialize() {
-          System.out.println( "L1 inited");
-          if (!level1){
-            System.out.println( "Switching to elevator");
-
-            toRun = new SetElevatorHeight(elevator, Constants.LEVEL1_HEIGHT, lightsSubsystem);
-            level0 = false;
-            level1 = true;
-            level2 = false;
-            level3 = false;
-            SmartDashboard.putBoolean(getName(), level0);
-            SmartDashboard.putBoolean(getName(), level1);
-            SmartDashboard.putBoolean(getName(), level2);
-            SmartDashboard.putBoolean(getName(), level3);
-          } else {
-            System.out.println( "Switching to coral");
-             toRun = new SetCoralAngle(coral, 45);
-          }
-        }
-
-        @Override
-        public void execute() {
-          System.out.println( "Executing Level 1");
-          toRun.execute();
-        }
-
-        @Override
-        public boolean isFinished(){
-          return toRun.isFinished();
-        }
-      });
-       
-
-      operatorXbox.b().onTrue( new Command() {
-
-        Command toRun;
-        @Override
-        public void initialize() {
-          if (!level2){
-            toRun = new SetElevatorHeight(elevator,Constants.LEVEL2_HEIGHT );
-            level0 = false;
-            level1 = false;
-            level2 = true;
-            level3 = false;
-            SmartDashboard.putBoolean(getName(), level0);
-            SmartDashboard.putBoolean(getName(), level1);
-            SmartDashboard.putBoolean(getName(), level2);
-            SmartDashboard.putBoolean(getName(), level3);
-          } else {
-             toRun = new SetCoralAngle(coral, 45);
-          }
-        }
-
-        @Override
-        public void execute() {
-          toRun.execute();
-        }
-
-        @Override
-        public boolean isFinished(){
-          return toRun.isFinished();
-        }
-      });
-
-      operatorXbox.y().onTrue( new Command() {
-
-        Command toRun;
-        @Override
-        public void initialize() {
-          if (!level3){
-            toRun = new SetElevatorHeight(elevator, Constants.LEVEL3_HEIGHT);
-            level0 = false;
-            level1 = false;
-            level2 = false;
-            level3 = true;
-            SmartDashboard.putBoolean(getName(), level0);
-            SmartDashboard.putBoolean(getName(), level1);
-            SmartDashboard.putBoolean(getName(), level2);
-            SmartDashboard.putBoolean(getName(), level3);
-          } else {
-             toRun = new SetCoralAngle(coral, 0);
-
-          }
-        }
-
-        @Override
-        public void execute() {
-          toRun.execute();
-        }
-
-        @Override
-        public boolean isFinished(){
-          return toRun.isFinished();
-        }
-      });
-      */
         operatorXbox.leftBumper().whileTrue(new Command() {
           @Override
           public void execute() {
-           algaeGrabber.grab(); 
+           algae.grab(); 
           }
     
           @Override
           public void end(boolean interrupted) {
-            algaeGrabber.stop();
+            algae.stop();
           }
 
           @Override
@@ -402,12 +245,12 @@ public class RobotContainer {
         operatorXbox.leftTrigger().whileTrue(new Command() {
           @Override
           public void execute() {
-           algaeGrabber.release(); 
+           algae.release(); 
           }
     
           @Override
           public void end(boolean interrupted) {
-            algaeGrabber.stop();
+            algae.stop();
           }
 
           @Override
