@@ -13,6 +13,10 @@ import com.revrobotics.spark.config.ClosedLoopConfig.FeedbackSensor;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkMaxConfig;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
+import com.ctre.phoenix6.configs.SoftwareLimitSwitchConfigs;
+import com.ctre.phoenix6.configs.TalonFXConfiguration;
+import com.ctre.phoenix6.configs.TalonFXConfigurator;
+import com.ctre.phoenix6.controls.DutyCycleOut;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.revrobotics.spark.SparkClosedLoopController;
 
@@ -43,21 +47,21 @@ public class Climber extends SubsystemBase {
     harpoon= new TalonFX(ClimberConstants.harpoonMotorId);
     lock= new SparkMax(ClimberConstants.lockMotorId, MotorType.kBrushless);
     
-    SparkMaxConfig harpoonConfig = new SparkMaxConfig();
+    TalonFXConfigurator harpoonConfig = harpoon.getConfigurator();
     SparkMaxConfig lockConfig = new SparkMaxConfig();
-    SoftLimitConfig softLimit = new SoftLimitConfig();
 
-    softLimit
-    .forwardSoftLimitEnabled(true)
-    .forwardSoftLimit(750)
-    .reverseSoftLimitEnabled(true)
-    .reverseSoftLimit(0);
+    SoftwareLimitSwitchConfigs harpoonLimits = new SoftwareLimitSwitchConfigs();
 
+    harpoonLimits
+    .withForwardSoftLimitEnable(true)
+    .withReverseSoftLimitEnable(true)
+    .withForwardSoftLimitThreshold(170)
+    .withReverseSoftLimitThreshold(0);
 
-    harpoonConfig
-    //.inverted(true)
-    .idleMode(IdleMode.kBrake)
-    .apply(softLimit);
+ 
+harpoonConfig
+.apply(harpoonLimits);
+
 
     lockConfig
     .inverted(true)
@@ -73,7 +77,7 @@ public class Climber extends SubsystemBase {
 
   
     lock.configure(lockConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
-
+   
   }
 
 

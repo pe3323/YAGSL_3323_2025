@@ -59,16 +59,11 @@ public class Algae extends SubsystemBase {
         //To-Do:add a soft limit, needs to be tested
 
         armConfig
-        //.inverted(true)
+        .inverted(true)
         .idleMode(IdleMode.kBrake)
        .apply(softLimit);
 
-        armConfig.closedLoop
-            .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
-            .pidf(1.0, 0.0, 0.0, 0.0)
-            .iZone(0)
-            .outputRange(-1, 1);
-
+     
             arm.getEncoder().setPosition(0);
        arm.configure(armConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
        grabber.configure(wheels, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
@@ -83,21 +78,26 @@ public class Algae extends SubsystemBase {
     
     @Override
     public void periodic(){
-        pivotChange(controller.getLeftY());
+        if(Math.abs(controller.getLeftY()) < 0.1){
+             pivotChange(controller.getLeftY());
+            }
+    else {
+    pivotChange(controller.getLeftY());
+    }
     }   
   
     
     
-    public void extend() { // raises the roof
+    public void raise() { // raises the roof
 
-        arm.set(.50);
+        arm.set(.20);
     
     }
 
     // No more algae
-    public void retract() { // lowers the roof
+    public void lower() { // lowers the roof
 
-        arm.set(-.50);
+        arm.set(-.20);
         
 
     }

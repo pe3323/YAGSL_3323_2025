@@ -233,7 +233,7 @@ public class RobotContainer {
     
           @Override
           public void end(boolean interrupted) {
-            algae.stop();
+            algae.stopGrabber();
           }
 
           @Override
@@ -250,7 +250,7 @@ public class RobotContainer {
     
           @Override
           public void end(boolean interrupted) {
-            algae.stop();
+            algae.stopGrabber();
           }
 
           @Override
@@ -327,7 +327,7 @@ public class RobotContainer {
     operatorXbox.rightBumper().whileTrue(new Command() {
       @Override
       public void execute() {
-        algae.retract();
+        algae.lower();
       }
 
 
@@ -348,7 +348,7 @@ public class RobotContainer {
     operatorXbox.rightTrigger().whileTrue(new Command() {
       @Override
       public void execute() {
-        algae.extend();
+        algae.raise();
         SmartDashboard.putNumber("AlgaeRots", algae.getposition());
       }
 
