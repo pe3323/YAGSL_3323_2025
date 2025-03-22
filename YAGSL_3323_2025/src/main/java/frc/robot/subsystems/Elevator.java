@@ -29,7 +29,7 @@ public class Elevator extends SubsystemBase {
   /** Creates a new ExampleSubsystem. */
   public Elevator() {
 
-    heightController = new PIDController(.3, 0, 0);
+    heightController = new PIDController(.10, 0, 0);
     heightController.setTolerance(0.1);
     
     elevator2= new SparkMax(ElevatorConstants.ele2, MotorType.kBrushless);
@@ -44,7 +44,7 @@ public class Elevator extends SubsystemBase {
 
     softLimit
     .forwardSoftLimitEnabled(true)
-    .forwardSoftLimit(500)
+    .forwardSoftLimit(100) // 500... turning it down for testing
     .reverseSoftLimitEnabled(true)
     .reverseSoftLimit(0);
     

@@ -42,7 +42,7 @@ public class Climber extends SubsystemBase {
   /** Creates a new ExampleSubsystem. */
   public Climber() {
 
-    lockController = new PIDController(0.05, 0, 0);
+    lockController = new PIDController(0.15, 0, 0);
     
     harpoon= new TalonFX(ClimberConstants.harpoonMotorId);
     lock= new SparkMax(ClimberConstants.lockMotorId, MotorType.kBrushless);
@@ -59,25 +59,17 @@ public class Climber extends SubsystemBase {
     .withReverseSoftLimitThreshold(0);
 
  
-harpoonConfig
-.apply(harpoonLimits);
+    harpoonConfig
+    .apply(harpoonLimits);
 
 
     lockConfig
     .inverted(true)
     .idleMode(IdleMode.kBrake);
     
-
-    
-    
     lock.getEncoder().setPosition(0);
-    
-
-   
-
-  
     lock.configure(lockConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
-   
+    lock.clearFaults();
   }
 
 

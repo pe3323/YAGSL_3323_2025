@@ -68,7 +68,11 @@ public class SetElevatorHeight extends Command {
   @Override
   public void execute() {
     //lightsSubsystem.setSolidColor(19, 173, 14);
-    double speed = MathUtil.clamp(elevatorController.calculate(elevator.getHeight()), -1.0, 1.0);
+
+    double minDownPercentVoltage = -0.30;
+    double maxDownPercentVoltage = 0.30;
+
+    double speed = MathUtil.clamp(elevatorController.calculate(elevator.getHeight()), minDownPercentVoltage, maxDownPercentVoltage);
     SmartDashboard.putNumber("Current Height", elevator.getHeight());
     SmartDashboard.putNumber("Speed", speed);
 

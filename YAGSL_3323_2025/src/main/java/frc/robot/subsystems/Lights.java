@@ -12,7 +12,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
         
         private final AddressableLED m_led = null;
-        private final AddressableLEDBuffer m_ledBuffer;
+        private final AddressableLEDBuffer m_ledBuffer = new AddressableLEDBuffer(60);
     
         public Lights (int port){
             // PWM port 0
@@ -22,7 +22,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
         // Reuse buffer
         // Default to a length of 60, start empty output
         // Length is expensive to set, so only set it once, then just update data
-        m_ledBuffer = new AddressableLEDBuffer(60);
+        //m_ledBuffer = new AddressableLEDBuffer(60);
         //m_led.setLength(m_ledBuffer.getLength());
     
         // Set the data
@@ -46,7 +46,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
         public void setSolidColor (int red, int green, int blue){
             for (var i = 0; i < m_ledBuffer.getLength(); i++) {
                 
-                m_ledBuffer.setRGB(i, red, green, blue);
+                //m_ledBuffer.setRGB(i, red, green, blue);
                
              }
 
@@ -56,7 +56,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
         public void setStripedColor (int red, int green, int blue){
             for (var i = 0; i < m_ledBuffer.getLength(); i++) {
                 
-                m_ledBuffer.setRGB(i, red, green, blue);
+                //m_ledBuffer.setRGB(i, red, green, blue);
                
              }
 

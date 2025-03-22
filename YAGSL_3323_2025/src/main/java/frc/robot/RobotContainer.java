@@ -7,6 +7,7 @@ package frc.robot;
 import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.PathPlannerAuto;
 
+import edu.wpi.first.apriltag.AprilTag;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -215,7 +216,6 @@ public class RobotContainer {
       driverXbox.rightBumper().onTrue(Commands.none());
     } else {
       driverXbox.y().onTrue((Commands.runOnce(drivebase::zeroGyro)));
-      driverXbox.start().onTrue((drivebase.driveToPose(new Pose2d(14.268, 4.275 , Rotation2d.fromDegrees(174.279)))));
       operatorXbox.a().onTrue( new  ConditionalCommand(new SetCoralAngle(coral, 0), new SetElevatorHeight(elevator, Constants.LEVEL0_HEIGHT), () -> elevator.atLevel0()));
       operatorXbox.x().onTrue( new  ConditionalCommand(new SetCoralAngle(coral, 90), new SetElevatorHeight(elevator, Constants.LEVEL1_HEIGHT), () -> elevator.atLevel1()));
       operatorXbox.b().onTrue( new  ConditionalCommand(new SetCoralAngle(coral, 90), new SetElevatorHeight(elevator, Constants.LEVEL2_HEIGHT), () -> elevator.atLevel2()));
@@ -266,12 +266,21 @@ public class RobotContainer {
 
 
         // Extend the harpoon and then pull us in.
+        //driverXbox.start().onTrue((drivebase.driveToPose(new Pose2d(14.268, 4.275 , Rotation2d.fromDegrees(174.279)))));
 
-        driverXbox.x().onTrue(
+        driverXbox.start().onTrue( Commands.runOnce(() -> {
+            AprilTag t = Utils.getClosestReefAprilTag(drivebase.getPose());
+            if ( t == null )
+              SmartDashboard.putString("Goto Id", "None");
+            else 
+              SmartDashboard.putString("I Want to go to ID " , "" + t.ID);
+        }, drivebase));
+
+        //driverXbox.x().onTrue(
           //Commands.runOnce(new AprilTagAssist(drivebase), drivebase)
             //drivebase.aimAtTarget(drivebase.getVision().getCamera("center"))
-            new FindApril(drivebase)
-        );
+       //     new FindApril(drivebase)
+       // );
 
 
 
@@ -315,13 +324,9 @@ public class RobotContainer {
         // These commands handle the foot/hook/anchor thing
         // was -18  (49:1), then multiple 1.9 
         driverXbox.a().onTrue(
-        new SetLockAngle(climber, -1, lightsSubsystem)
+        new SetLockAngle(climber, -1.5, lightsSubsystem)
         );
        
-        driverXbox.b().onTrue(
-        new SetLockAngle(climber, 0, lightsSubsystem)  
-        );
-
 
     }
     operatorXbox.rightBumper().whileTrue(new Command() {
