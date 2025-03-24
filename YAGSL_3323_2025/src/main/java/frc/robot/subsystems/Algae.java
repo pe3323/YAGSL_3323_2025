@@ -71,19 +71,16 @@ public class Algae extends SubsystemBase {
     }
 
     public void pivotChange(double speed) { // raises the roof
-
         pivot.set(speed);
-    
     }
     
     @Override
     public void periodic(){
         if(Math.abs(controller.getLeftY()) < 0.1){
-             pivotChange(controller.getLeftY());
-            }
-    else {
-    pivotChange(controller.getLeftY());
-    }
+             pivotChange(0.0);
+        } else {
+            pivotChange(controller.getLeftY());
+        }
     }   
   
     
