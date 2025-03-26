@@ -29,7 +29,7 @@ public class Elevator extends SubsystemBase {
   /** Creates a new ExampleSubsystem. */
   public Elevator() {
 
-    heightController = new PIDController(.10, 0, 0);
+    heightController = new PIDController(.05, 0, 0);
     heightController.setTolerance(0.1);
     
     elevator2= new SparkMax(ElevatorConstants.ele2, MotorType.kBrushless);

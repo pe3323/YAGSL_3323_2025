@@ -7,13 +7,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": "C_to_2"
+            "pathName": "RB_to_3"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "Level3"
+            "name": "Level2"
           }
         },
         {
@@ -38,6 +38,18 @@
           "type": "named",
           "data": {
             "name": "Level0"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "3_to_Proc"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "releaseAlgae"
           }
         }
       ]

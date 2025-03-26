@@ -28,7 +28,7 @@ public class Algae extends SubsystemBase {
     SparkClosedLoopController pidControllerArm;
     private final SparkMax grabber;
     SparkClosedLoopController pidControllerGrabber;
-    private PIDController poseController;
+    private PIDController armController = new PIDController(0.05,0,0);
     private CommandXboxController controller;
 
     public Algae(CommandXboxController controller) {
@@ -39,12 +39,20 @@ public class Algae extends SubsystemBase {
         SparkMaxConfig wheels = new SparkMaxConfig();
         SparkMaxConfig pivotConfig = new SparkMaxConfig();
         SoftLimitConfig softLimit = new SoftLimitConfig();
+        SoftLimitConfig softLimitPivot = new SoftLimitConfig();
+
 
         this.controller = controller;
 
 
         arm.clearFaults();
         
+        softLimitPivot
+        .forwardSoftLimitEnabled(true)
+        .forwardSoftLimit(0)
+        .reverseSoftLimitEnabled(true)
+        .reverseSoftLimit(-25);
+
         softLimit
         .forwardSoftLimitEnabled(true)
         .forwardSoftLimit(AlgaeConstants.maxAlgaePosition)
@@ -55,7 +63,8 @@ public class Algae extends SubsystemBase {
         .idleMode(IdleMode.kBrake);
 
         pivotConfig
-        .idleMode(IdleMode.kBrake);
+        .idleMode(IdleMode.kBrake)
+        .apply(softLimitPivot);
         //To-Do:add a soft limit, needs to be tested
 
         armConfig
@@ -116,14 +125,14 @@ public class Algae extends SubsystemBase {
     }
     
     public void grab() { // raises the roof
-        grabber.set(-.3);
+        grabber.set(-1.0);
     
     }
 
     // No more algae
     public void release() { // lowers the roof
 
-        grabber.set(.3);
+        grabber.set(0.5);
         
 
     }
@@ -134,13 +143,25 @@ public class Algae extends SubsystemBase {
     }
 
     public PIDController getController() {
-        return poseController;
+        return armController;
       }
-      public void setGrabberSpeed(double i) { // lowers the roof
+      
+      public double getPose() {
+        return arm.getEncoder().getPosition();
+      }
 
-        grabber.set(i);
+
+      public void setArmSpeed(double i) { // lowers the roof
+
+        arm.set(i);
         
 
     }
+
+
+    public void setGrabberSpeed(double i) { // lowers the roof
+
+        grabber.set(i);
+}
 }
 

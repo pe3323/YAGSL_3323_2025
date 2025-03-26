@@ -48,7 +48,9 @@ public class Robot extends TimedRobot
   {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
-    CameraServer.addServer("center");
+      CameraServer.addServer("photonvision");
+      
+
 
     m_robotContainer = new RobotContainer();
 

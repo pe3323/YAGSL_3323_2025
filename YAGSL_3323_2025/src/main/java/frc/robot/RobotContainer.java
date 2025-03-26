@@ -25,7 +25,9 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.AlgaeExtend;
+import frc.robot.commands.AlgaeGrab;
 import frc.robot.commands.AlgaeRetract;
+import frc.robot.commands.ArmSetPosition;
 import frc.robot.commands.FindApril;
 import frc.robot.commands.SetCoralAngle;
 import frc.robot.commands.SetCoralPivot;
@@ -137,8 +139,8 @@ public class RobotContainer {
     NamedCommands.registerCommand("Level1", new SetElevatorHeight(elevator, Constants.LEVEL1_HEIGHT)); 
     NamedCommands.registerCommand("Level2", new SetElevatorHeight(elevator, Constants.LEVEL2_HEIGHT)); 
     NamedCommands.registerCommand("Level3", new SetElevatorHeight(elevator, Constants.LEVEL3_HEIGHT)); 
-    NamedCommands.registerCommand("coralDeposit", new SetCoralAngle(coral, 125)); 
-    NamedCommands.registerCommand("coralDefault", new SetCoralAngle(coral, 0));
+    NamedCommands.registerCommand("grabAlgae", new AlgaeGrab(algae, 2));
+    NamedCommands.registerCommand("releaseAlgae", new AlgaeGrab(algae, -2));
     NamedCommands.registerCommand("algaeExtend", new AlgaeExtend(algae, 2, lightsSubsystem));
     NamedCommands.registerCommand("algaeRetract", new AlgaeRetract(algae, 2, lightsSubsystem)); 
     
@@ -151,18 +153,11 @@ public class RobotContainer {
     NamedCommands.registerCommand("test", Commands.print("I EXIST"));
 
     // Add autonomous commands here  
-    m_chooser.setDefaultOption("Do_Nothing", new PathPlannerAuto("C2"));
-    m_chooser.addOption("Default", new PathPlannerAuto("Default"));
-    m_chooser.addOption("LB1_1LS", new PathPlannerAuto("LB1_1LS"));
-    m_chooser.addOption("RB3_3RS", new PathPlannerAuto("RB3_3RS"));
-    m_chooser.addOption("LB1_1LS_2", new PathPlannerAuto("LB1_1LS_2"));
-    m_chooser.addOption("RB3_3RS_2", new PathPlannerAuto("RB3_3RS_2"));
-    m_chooser.addOption("RB3_RS3_3", new PathPlannerAuto("RB3_RS3_3"));
-    m_chooser.addOption("LB1_LS1_3", new PathPlannerAuto("LB1_LS1_3"));
-    m_chooser.addOption("RB3_3RS_RS4_4RS", new PathPlannerAuto("RB3_3RS_RS4_4RS"));
-    m_chooser.addOption("RB3_3RS_RS4_4RS_2", new PathPlannerAuto("RB3_3RS_RS4_4RS_2"));
-    m_chooser.addOption("LB1_1LS_LS6_6LS_LS5", new PathPlannerAuto("LB1_1LS_LS6_6LS_LS5"));
-    m_chooser.addOption("LB1_1LS_2_LS6_6LS", new PathPlannerAuto("LB1_1LS_2_LS6_6LS"));
+    m_chooser.setDefaultOption("Do_Nothing", new PathPlannerAuto("Do_Nothing"));
+    m_chooser.addOption("Mid", new PathPlannerAuto("C2"));
+    m_chooser.addOption("Right", new PathPlannerAuto("Right"));
+    m_chooser.addOption("Left", new PathPlannerAuto("Left"));
+    
 
 
 
@@ -329,49 +324,22 @@ public class RobotContainer {
        
 
     }
-    operatorXbox.rightBumper().whileTrue(new Command() {
-      @Override
-      public void execute() {
-        algae.lower();
-      }
+    operatorXbox.rightTrigger().onTrue(
+     
+        new ArmSetPosition(algae, -25)
 
-
-      @Override
-      public void end(boolean interuppted){
-
-        algae.stop();
-      }
-
-      @Override
-      public boolean isFinished(){
-        return false;
-      }
+    );
 
      
-    });
+    
 
-    operatorXbox.rightTrigger().whileTrue(new Command() {
-      @Override
-      public void execute() {
-        algae.raise();
-        SmartDashboard.putNumber("AlgaeRots", algae.getposition());
-      }
+    operatorXbox.rightBumper().onTrue(
+        new ArmSetPosition(algae, 0)
 
-      @Override
-      public void end(boolean interuppted){
-
-        algae.stop();
-      }
-
-      @Override
-      public boolean isFinished(){
-        return false;
-      }
-
-      
-    });
-
+    );
+    
   }
+  
 
 
   /**
