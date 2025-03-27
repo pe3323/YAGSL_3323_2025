@@ -220,11 +220,11 @@ public class RobotContainer {
       );
 
 
-        operatorXbox.leftBumper().whileTrue(new Command() {
+         operatorXbox.leftBumper().whileTrue(new Command() {
           @Override
           public void execute() {
            algae.grab(); 
-          }
+          }  
     
           @Override
           public void end(boolean interrupted) {
@@ -322,19 +322,19 @@ public class RobotContainer {
         new SetLockAngle(climber, -1.5, lightsSubsystem)
         );
        
-
+    //RightTrigger pushes the algae arm down
     }
     operatorXbox.rightTrigger().onTrue(
      
-        new ArmSetPosition(algae, -25)
+        new ArmSetPosition(algae, -90, "down")
 
     );
 
      
     
-
+    //Right bumper sets the algae arm back to 0
     operatorXbox.rightBumper().onTrue(
-        new ArmSetPosition(algae, 0)
+        new ArmSetPosition(algae, 0, "up")
 
     );
     

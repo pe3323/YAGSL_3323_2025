@@ -256,9 +256,9 @@ public class Vision
      
      
    REAR_CAM("rear",
-              new Rotation3d(0, Math.toRadians(0),Math.PI),
-              new Translation3d(Units.inchesToMeters(-13.0),
-                                Units.inchesToMeters(13.0),
+              new Rotation3d(0, Math.toRadians(0),0),
+              new Translation3d(Units.inchesToMeters(0),
+                                Units.inchesToMeters(22.0),
                                 Units.inchesToMeters(0.0)),
               VecBuilder.fill(4, 4, 8), VecBuilder.fill(0.5, 0.5, 1)),
               
@@ -266,9 +266,9 @@ public class Vision
      * Center Camera
      */
     CENTER_CAM("center",
-               new Rotation3d(0, Units.degreesToRadians(18), 0),
-               new Translation3d(Units.inchesToMeters(0),
-                                 Units.inchesToMeters(10),
+               new Rotation3d(0, Units.degreesToRadians(18), Math.PI),
+               new Translation3d(Units.inchesToMeters(6),
+                                 Units.inchesToMeters(3),
                                  Units.inchesToMeters(0)),
                VecBuilder.fill(4, 4, 8), VecBuilder.fill(0.5, 0.5, 1));
 
