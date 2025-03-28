@@ -326,7 +326,7 @@ public class RobotContainer {
     }
     operatorXbox.rightTrigger().onTrue(
      
-        new ArmSetPosition(algae, -90, "down")
+        new ArmSetPosition(algae, -90)
 
     );
 
@@ -334,7 +334,7 @@ public class RobotContainer {
     
     //Right bumper sets the algae arm back to 0
     operatorXbox.rightBumper().onTrue(
-        new ArmSetPosition(algae, 0, "up")
+        new ArmSetPosition(algae, 0)
 
     );
     

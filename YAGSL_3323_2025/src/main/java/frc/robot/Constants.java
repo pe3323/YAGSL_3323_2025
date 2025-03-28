@@ -26,8 +26,8 @@ public final class Constants
   
   public static final double LEVEL0_HEIGHT = 0;  // 6
   public static final double LEVEL05_HEIGHT= 4;
-  public static final double LEVEL1_HEIGHT = 6.5; // 13
-  public static final double LEVEL2_HEIGHT = 16; // 32
+  public static final double LEVEL1_HEIGHT = 4; // 13
+  public static final double LEVEL2_HEIGHT = 13; // 32
   public static final double LEVEL3_HEIGHT = 23; // 59.5
 
   public static final double ROBOT_MASS = (148 - 20.3) * 0.453592; // 32lbs * kg per pound
@@ -93,13 +93,13 @@ public final class Constants
     public static final int grabberMotorId = 15;
     public static final int pivotMotorID = 10;
 
-    public static final int armGear = 225;      // big arm
-    public static final int grabberGear = 7;   // fingers
+    public static final int armGear = 405;      // big arm
+    public static final int grabberGear = 15;   // fingers
     public static final int pivotGear = 90;    // wrist
 
     // this is the wrist of the algae subsystem
     // these are the # of rotations of the motor
     public static final double maxAlgaePosition = 0;
-    public static final double miniumumAlgaePostition = -58;
+    public static final double miniumumAlgaePostition = -103;
   } 
 }

@@ -32,7 +32,7 @@ public class Algae extends SubsystemBase {
     private final TalonFX grabber;
     SparkClosedLoopController pidControllerGrabber;
     private PIDController armController = new PIDController(0.05,0,0);
-    private PIDController pivotController = new PIDController(0.05,0,0);
+    private PIDController pivotController = new PIDController(0.1,0,0);
     private CommandXboxController controller;
     private boolean controlLock = false;
 
@@ -124,7 +124,7 @@ public class Algae extends SubsystemBase {
         if(Math.abs(controller.getLeftY()) < 0.1){
              pivotChange(0.0);
         } else {
-            pivotChange(controller.getLeftY());
+            pivotChange(controller.getLeftY()*.75);
         }}
     }   
   
@@ -165,14 +165,14 @@ public class Algae extends SubsystemBase {
     }
     
     public void grab() { // raises the roof
-        grabber.set(.5);
+        grabber.set(-.5);
     
     }
 
     // No more algae
     public void release() { // lowers the roof
 
-        grabber.set(-1);
+        grabber.set(1);
         
 
     }

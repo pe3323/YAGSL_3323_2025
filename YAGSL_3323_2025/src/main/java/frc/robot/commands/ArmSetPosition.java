@@ -22,16 +22,16 @@ public class ArmSetPosition extends Command {
   private PIDController pivotController;
   private double endPosition;
   private Lights lightsSubsystem;
-  private String direction;
+  //private String direction;
 
   /**
    * Creates a new ExampleCommand.
    *
    * @param subsystem The subsystem used by this command.
    */
-  public ArmSetPosition(Algae algae, double angle, String direction) {
+  public ArmSetPosition(Algae algae, double angle) {
     this.algae = algae;
-    this.direction = direction;
+    //this.direction = direction;
     //this.lightsSubsystem = lightsSubsystem;
     armController = algae.getController();
     pivotController = algae.getPivotController();
@@ -47,17 +47,18 @@ public class ArmSetPosition extends Command {
   public void initialize() {
     SmartDashboard.putNumber("Target height:", endPosition);
     armController.setSetpoint(endPosition);
-    algae.setLocked(true);
+    //algae.setLocked(true);
 
-    algae.pivotChange(0);
+    //algae.pivotChange(0);
 
-    if (direction.equalsIgnoreCase("down")){
-      pivotController.setSetpoint((-90/360) * AlgaeConstants.pivotGear);
+
+    /* if (direction.equalsIgnoreCase("down")){
+      pivotController.setSetpoint(22);
 
     }
     else {
       pivotController.setSetpoint(0);
-    }
+    } */
   }
     
 
@@ -71,32 +72,30 @@ public class ArmSetPosition extends Command {
 
     double speed = armController.calculate(algae.getposition());
     
-    SmartDashboard.putNumber("Current Arm location", algae.getposition());
-    SmartDashboard.putNumber("Speed", speed);
-
+    /* SmartDashboard.putNumber("Current Arm location", algae.getposition());
+    
+    
+        SmartDashboard.putNumber("pivot angle", algae.getPivotAngle());
+        SmartDashboard.putNumber("arm speed", speed);
+        SmartDashboard.putNumber("arm angle", algae.getArmAngle()); */
     algae.setArmSpeed(speed);
 
-    if (direction.equalsIgnoreCase("down") && Math.abs(algae.getArmAngle()) > 30) {
-      if (Math.abs(algae.getPivotAngle()) < 90){
-        double pivotSpeed = MathUtil.clamp(pivotController.calculate(algae.getPivotPosition()), -.5, .5);
+    /* if (direction.equalsIgnoreCase("down") && Math.abs(algae.getArmAngle()) > 30) {
+        double pivotSpeed = MathUtil.clamp(pivotController.calculate(algae.getPivotPosition()), -1, 1);
         algae.pivotChange(pivotSpeed);
         SmartDashboard.putNumber("pivot speed", pivotSpeed);
-        SmartDashboard.putNumber("pivot angle", algae.getPivotAngle());
-        SmartDashboard.putNumber("arm speed", speed);
-        SmartDashboard.putNumber("arm angle", algae.getArmAngle());
-      }
+        SmartDashboard.putString("direction", "down");
+        
     }
     else if (direction.equalsIgnoreCase("up") && Math.abs(algae.getArmAngle()) < 60) {
-      if (Math.abs(algae.getPivotAngle()) > 0){
         double pivotSpeed = MathUtil.clamp(pivotController.calculate(algae.getPivotPosition()), -.5, .5);
         algae.pivotChange(pivotSpeed);
         SmartDashboard.putNumber("pivot speed", pivotSpeed);
-        SmartDashboard.putNumber("pivot angle", algae.getPivotAngle());
-        SmartDashboard.putNumber("arm speed", speed);
-        SmartDashboard.putNumber("arm angle", algae.getArmAngle());
-      }
+        SmartDashboard.putString("direction", "up");
 
-    }
+    } */
+    
+    
   }
     
 
@@ -106,7 +105,7 @@ public class ArmSetPosition extends Command {
     algae.stop();
     algae.setPosition(endPosition);
     SmartDashboard.putNumber("Current Height", algae.getposition());
-    algae.setLocked(false);
+    //algae.setLocked(false);
   }
 
   // Returns true when the command should end.
@@ -114,7 +113,7 @@ public class ArmSetPosition extends Command {
   public boolean isFinished() {
     SmartDashboard.putBoolean("IsFinished", armController.atSetpoint());
     //lightsSubsystem.setSolidColor(136, 9, 227);
-    return armController.atSetpoint() && pivotController.atSetpoint();
+    return armController.atSetpoint(); // && pivotController.atSetpoint();
   }
 }
 
