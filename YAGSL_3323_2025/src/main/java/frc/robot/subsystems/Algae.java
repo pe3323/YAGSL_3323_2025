@@ -3,6 +3,7 @@ package frc.robot.subsystems;
 import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
 import com.ctre.phoenix6.configs.TalonFXConfigurator;
+import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
@@ -52,6 +53,7 @@ public class Algae extends SubsystemBase {
 
         this.controller = controller;
 
+        
 
         arm.clearFaults();
         
@@ -149,7 +151,10 @@ public class Algae extends SubsystemBase {
     }
 
     public void stop() { // stops the roof
+
+        
         arm.set(0);
+
 
     }
 
@@ -178,8 +183,10 @@ public class Algae extends SubsystemBase {
     }
 
     public void stopGrabber() { // stops the roof
+        double currentPosition = grabber.getPosition().getValueAsDouble();
         grabber.set(0);
-
+        PositionVoltage holdPosition = new PositionVoltage(currentPosition);
+        grabber.setControl(holdPosition);
     }
 
     public PIDController getController() {

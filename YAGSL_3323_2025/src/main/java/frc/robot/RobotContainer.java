@@ -72,7 +72,9 @@ public class RobotContainer {
   private boolean level1 = false;
   private boolean level2 = false;
   private boolean level3 = false;
+  private double speedFactor = 1.0;
   private final Lights lightsSubsystem = new Lights(0);
+
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
   final CommandXboxController driverXbox = new CommandXboxController(0);
@@ -87,8 +89,8 @@ public class RobotContainer {
    * by angular velocity.
    */
   SwerveInputStream driveAngularVelocity = SwerveInputStream.of(drivebase.getSwerveDrive(),
-      () -> driverXbox.getLeftY() * 1,
-      () -> driverXbox.getLeftX() * 1)
+      () -> driverXbox.getLeftY() * 1 *speedFactor,
+      () -> driverXbox.getLeftX() * 1 *speedFactor)
       .withControllerRotationAxis(() -> driverXbox.getRightX() /2.0 * -1.0)
       .deadband(OperatorConstants.DEADBAND)
       .scaleTranslation(0.8)
@@ -110,8 +112,8 @@ public class RobotContainer {
       .allianceRelativeControl(false);
 
   SwerveInputStream driveAngularVelocityKeyboard = SwerveInputStream.of(drivebase.getSwerveDrive(),
-      () -> -driverXbox.getLeftY(),
-      () -> -driverXbox.getLeftX())
+      () -> -driverXbox.getLeftY()*speedFactor,
+      () -> -driverXbox.getLeftX()*speedFactor)
       .withControllerRotationAxis(() -> driverXbox.getRawAxis(
           2))
       .deadband(OperatorConstants.DEADBAND)
@@ -211,14 +213,41 @@ public class RobotContainer {
       driverXbox.rightBumper().onTrue(Commands.none());
     } else {
       driverXbox.y().onTrue((Commands.runOnce(drivebase::zeroGyro)));
-      operatorXbox.a().onTrue( new  ConditionalCommand(new SetCoralAngle(coral, 0), new SetElevatorHeight(elevator, Constants.LEVEL0_HEIGHT), () -> elevator.atLevel0()));
-      operatorXbox.x().onTrue( new  ConditionalCommand(new SetCoralAngle(coral, 90), new SetElevatorHeight(elevator, Constants.LEVEL1_HEIGHT), () -> elevator.atLevel1()));
-      operatorXbox.b().onTrue( new  ConditionalCommand(new SetCoralAngle(coral, 90), new SetElevatorHeight(elevator, Constants.LEVEL2_HEIGHT), () -> elevator.atLevel2()));
-      operatorXbox.y().onTrue( new  ConditionalCommand(new SetCoralAngle(coral, -35), new SetElevatorHeight(elevator, Constants.LEVEL3_HEIGHT), () -> elevator.atLevel3()));
-      operatorXbox.start().onTrue(
-        new SetElevatorHeight(elevator, Constants.LEVEL05_HEIGHT)
-      );
+      operatorXbox.a().onTrue(new SetElevatorHeight(elevator, Constants.LEVEL0_HEIGHT));
+      operatorXbox.x().onTrue(new SetElevatorHeight(elevator, Constants.LEVEL1_HEIGHT));
+      operatorXbox.b().onTrue(new SetElevatorHeight(elevator, Constants.LEVEL2_HEIGHT));
+      operatorXbox.y().onTrue(new SetElevatorHeight(elevator, Constants.LEVEL3_HEIGHT));
+     
 
+        driverXbox.start().onTrue(new Command() {
+          @Override
+          public void execute() {
+            System.out.println("pov up works :D");
+            if (speedFactor < 1) {
+              speedFactor += 0.25;
+            }
+            // += or =+: SpeedFactor = SpeedFactor + Rational Number 
+            // -= or =-: SpeedFactor = SpeedFactor - Rational Number 
+          }
+          public boolean isFinished() {
+            return true; 
+ 
+          }
+        });
+
+        driverXbox.back().onTrue(new Command() {
+          @Override
+          public void execute() {
+            System.out.println("pov down works :D");
+            if (speedFactor > 0.25) {
+              speedFactor -= 0.25;
+            }
+          }
+          public boolean isFinished() {
+            return true; 
+ 
+          }
+        });
 
          operatorXbox.leftBumper().whileTrue(new Command() {
           @Override
@@ -263,13 +292,7 @@ public class RobotContainer {
         // Extend the harpoon and then pull us in.
         //driverXbox.start().onTrue((drivebase.driveToPose(new Pose2d(14.268, 4.275 , Rotation2d.fromDegrees(174.279)))));
 
-        driverXbox.start().onTrue( Commands.runOnce(() -> {
-            AprilTag t = Utils.getClosestReefAprilTag(drivebase.getPose());
-            if ( t == null )
-              SmartDashboard.putString("Goto Id", "None");
-            else 
-              SmartDashboard.putString("I Want to go to ID " , "" + t.ID);
-        }, drivebase));
+        
 
         //driverXbox.x().onTrue(
           //Commands.runOnce(new AprilTagAssist(drivebase), drivebase)
@@ -322,6 +345,9 @@ public class RobotContainer {
         new SetLockAngle(climber, -1.5, lightsSubsystem)
         );
        
+        driverXbox.b().onTrue(
+        new SetLockAngle(climber, 0, lightsSubsystem)
+        );
     //RightTrigger pushes the algae arm down
     }
     operatorXbox.rightTrigger().onTrue(
@@ -331,6 +357,7 @@ public class RobotContainer {
     );
 
      
+
     
     //Right bumper sets the algae arm back to 0
     operatorXbox.rightBumper().onTrue(
